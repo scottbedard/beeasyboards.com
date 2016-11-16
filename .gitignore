@@ -1,8 +1,9 @@
 .DS_Store
-node_modules/
-dist/
-pages/
 assets/
+dist/
+node_modules/
 npm-debug.log
+pages/
 selenium-debug.log
-test/unit/coverage
+test/unit/coverage/
+yarn-error.log

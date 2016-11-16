@@ -1,10 +1,11 @@
 //
 // Directives
 //
-require('./directives/linkable')
+require('./directives/linkable');
 
 //
 // Plugins
 //
-require('./plugins/resources')
-require('./plugins/router')
+require('./plugins/resources');
+require('./plugins/router');
+require('./plugins/vuex');

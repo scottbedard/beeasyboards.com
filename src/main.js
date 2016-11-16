@@ -1,28 +1,34 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import RootComponent from './root'
-import routes from './app/routes'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import routes from './app/routes';
+import { sync } from 'vuex-router-sync';
 
 //
-// Configure Vue utilities and plugins
+// Boot up our application
 //
-require('./app/boot')
+require('./app/boot');
 
 //
-// Configure the router
+// Configure the router and store
+//
 //
 const router = new VueRouter({
   base: __dirname,
   mode: 'history',
-  routes
-})
+  routes,
+});
+
+const store = require('./app/store');
+
+sync(store, router);
 
 //
 // Launch the application
 //
 /* eslint-disable no-new */
 new Vue({
-  router,
   el: '#app',
-  render: h => h(RootComponent)
-})
+  router,
+  store,
+  render: h => h(require('./root')),
+});
