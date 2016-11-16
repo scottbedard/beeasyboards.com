@@ -13,9 +13,9 @@ require('./app/boot');
 //
 //
 const router = new VueRouter({
-  base: __dirname,
-  mode: 'history',
-  routes,
+    base: __dirname,
+    mode: 'history',
+    routes,
 });
 
 const store = require('./app/store');
@@ -25,10 +25,9 @@ sync(store, router);
 //
 // Launch the application
 //
-/* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(require('./root')),
+    el: '#app',
+    router,
+    store,
+    render: h => h(require('./root')),
 });
