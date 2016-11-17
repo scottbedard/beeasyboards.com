@@ -18,7 +18,7 @@
     <div class="v-header">
         <v-content>
             <v-logo></v-logo>
-            <v-desktop-navigation><v-desktop-navigation>
+            <v-navigation-desktop><v-navigation-desktop>
         </v-content>
     </div>
 </template>
@@ -26,7 +26,7 @@
 <script>
     export default {
         components: {
-            'v-desktop-navigation': require('./desktop_navigation'),
+            'v-navigation-desktop': require('./navigation/desktop'),
             'v-logo': require('./logo'),
         },
     };
