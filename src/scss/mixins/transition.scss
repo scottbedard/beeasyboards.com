@@ -1,0 +1,8 @@
+//
+// Transition
+//
+@mixin transition($properties, $duration: $default-transition-duration, $function: ease) {
+    transition-property: unquote($properties);
+    transition-duration: $duration;
+    transition-timing-function: $function;
+}
