@@ -23,7 +23,7 @@
         position: absolute;
         right: 0;
         top: 0;
-        
+
         @include bp(tablet) { display: none }
     }
 </style>
