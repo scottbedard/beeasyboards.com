@@ -11,4 +11,8 @@ html {
 
 body {
     font-family: 'Open Sans', sans-serif;
+
+    :not(.case-sensitive) {
+        text-transform: lowercase;
+    }
 }

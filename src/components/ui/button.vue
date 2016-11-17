@@ -1,7 +1,35 @@
 <style lang="scss" scoped>@import 'core';
     a,
     button {
-        // @todo
+        border: 1px solid transparent;
+        border-radius: 3px;
+        background-color: lighten($off-black, 5%);
+        color: $off-white;
+        outline: none;
+        padding: 10px 20px;
+        text-decoration: none;
+        @include transition(background-color);
+
+        &:active {
+            transform: translateY(1px);
+        }
+
+        &:hover {
+            background-color: $off-black;
+        }
+    }
+
+    .outlined {
+        $color: lighten($off-black, 15%);
+        background-color: transparent;
+        border: 1px solid $color;
+        color: $color;
+
+        &:hover {
+            background-color: transparent;
+            border-color: $off-black;
+            color: $off-black;
+        }
     }
 </style>
 
@@ -17,7 +45,7 @@
                 return this.$emit.bind(this, ...arguments);
             },
             renderAnchor(h) {
-                return <a href={ this.href } class={ this.buttonClasses } on-click={ this.emit('click') }>
+                return <a href={ this.href } on-click={ this.emit('click') }>
                     { this.$slots.default }
                 </a>;
             },
