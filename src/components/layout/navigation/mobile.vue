@@ -53,7 +53,8 @@
         <div class="navigation-content">
             <div class="routes">
                 <router-link v-for="link in navigation" :to="link.route">
-                    {{ link.name }}
+                    <span v-if="link.isCart">{{ link.name }} (0)</span>
+                    <span v-else>{{ link.name }}</span>
                 </router-link>
             </div>
         </div>
@@ -65,6 +66,9 @@
     import { mapState } from 'vuex';
 
     export default {
+        created() {
+            window.onresize = this.onWindowResized;
+        },
         computed: {
             ...mapState({
                 isVisible: state => state.navigation.isExpanded,
@@ -86,9 +90,16 @@
                 let action = isVisible ? 'addEventListener' : 'removeEventListener';
                 document[action]('click', this.onBodyClicked, true);
             },
+            onRouteChanged() {
+                this.$store.commit('NAVIGATION_HIDE');
+            },
+            onWindowResized() {
+                this.$store.commit('NAVIGATION_HIDE');
+            },
         },
         watch: {
             isVisible: 'onIsVisbleChanged',
+            '$store.state.route': 'onRouteChanged',
         },
     };
 </script>
