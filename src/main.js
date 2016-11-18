@@ -11,7 +11,6 @@ require('./app/boot');
 //
 // Configure the router and store
 //
-//
 const router = new VueRouter({
     base: __dirname,
     mode: 'history',
