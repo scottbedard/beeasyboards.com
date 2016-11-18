@@ -63,11 +63,12 @@
 
 <script>
     import Navigation from 'src/app/navigation';
+    import debounce from 'debounce';
     import { mapState } from 'vuex';
 
     export default {
         created() {
-            window.onresize = this.onWindowResized;
+            window.onresize = debounce(this.onWindowResized, 200);
         },
         computed: {
             ...mapState({
