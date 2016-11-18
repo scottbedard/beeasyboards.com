@@ -10,4 +10,7 @@ export default {
     getCategories() {
         return Vue.http.get('/api/bedard/shop/categories');
     },
+    getProduct(slug) {
+        return Vue.http.get(`/api/bedard/shop/products/${ slug }`);
+    },
 };

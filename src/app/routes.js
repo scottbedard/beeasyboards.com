@@ -31,8 +31,14 @@ module.exports = [
     },
 
     //
-    // 404
+    // Errors
     //
+    {
+        path: '/error',
+        name: '500',
+        component: require('src/pages/500/500'),
+    },
+
     {
         path: '*',
         name: '404',
