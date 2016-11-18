@@ -9,6 +9,17 @@ module.exports = [
     },
 
     {
+        path: '/shop',
+        component: require('src/pages/shop/shop'),
+        children: [
+            {
+                path: ':category?',
+                component: require('src/pages/shop/category/category'),
+            },
+        ],
+    },
+
+    {
         path: '*',
         component: require('src/pages/404/404'),
     },
