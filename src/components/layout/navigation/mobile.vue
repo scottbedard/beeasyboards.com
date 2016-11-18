@@ -1,37 +1,82 @@
 <style lang="scss" scoped>@import 'core';
-    .v-navigation-mobile {
-        position: fixed;
-        left: 0;
-        top: 0;
-        border: 5px solid green;
+    .navigation-content {
+        background-color: $off-white;
+        box-shadow: 4px 0px 10px 0px rgba(0, 0, 0, 0.45);
         height: 100%;
+        left: 0;
+        max-width: 320px;
+        position: fixed;
+        top: 0;
         transform: translateX(-100%);
-        width: 70%;
+        width: 75%;
+        z-index: z(mobile-navigation, content);
         @include transition(transform);
+    }
 
-        &.is-visible {
-            transform: translateX(0%);
+    .backdrop {
+        background-color: rgba(0, 0, 0, 0.8);
+        bottom: 0;
+        left: 0;
+        opacity: 0;
+        pointer-events: none;
+        position: fixed;
+        right: 0;
+        top: 0;
+        z-index: z(mobile-navigation, backdrop);
+        @include transition(opacity);
+    }
+
+    .is-visible {
+        .backdrop { opacity: 1 }
+        .navigation-content { transform: translateX(0%) }
+    }
+
+    .routes {
+        padding: 10px 0;
+
+        a {
+            color: $off-black;
+            display: block;
+            font-size: 24px;
+            font-weight: 300;
+            height: 60px;
+            line-height: 60px;
+            text-decoration: none;
+            padding: 0 20px;
         }
     }
 </style>
 
 <template>
     <div class="v-navigation-mobile" :class="{ 'is-visible': isVisible }">
-        Mobile nav!
+        <div class="backdrop"></div>
+        <div class="navigation-content">
+            <div class="routes">
+                <router-link v-for="link in navigation" :to="link.route">
+                    {{ link.name }}
+                </router-link>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+    import Navigation from 'src/app/navigation';
+    import { mapState } from 'vuex';
+
     export default {
         computed: {
-            isVisible() {
-                return this.$store.state.navigation.isExpanded;
-            },
+            ...mapState({
+                isVisible: state => state.navigation.isExpanded,
+            }),
+            navigation: () => Navigation,
         },
         methods: {
             onBodyClicked(e) {
                 // hide the nav if the click did not pass through our element
-                if (! e.path.find(el => el === this.$el)) {
+                let path = e.path || (e.composedPath && e.composedPath());
+
+                if (! path.find(el => el === this.$el)) {
                     e.preventDefault();
                     e.stopPropagation();
                     this.$store.commit('NAVIGATION_HIDE');

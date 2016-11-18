@@ -71,12 +71,12 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex';
+
     export default {
-        computed: {
-            isExpanded() {
-                return this.$store.state.navigation.isExpanded;
-            },
-        },
+        computed: mapState({
+            isExpanded: state => state.navigation.isExpanded,
+        }),
         methods: {
             onClicked() {
                 this.$store.commit('NAVIGATION_TOGGLE');

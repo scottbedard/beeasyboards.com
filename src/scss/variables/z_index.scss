@@ -2,5 +2,8 @@
 // z-index
 //
 $z-index: (
-
+    mobile-navigation: (
+        backdrop: 1,
+        content: 2,
+    ),
 );
