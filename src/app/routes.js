@@ -1,7 +1,7 @@
 module.exports = [
 
     //
-    // Routes
+    // Home
     //
     {
         path: '/',
@@ -9,19 +9,30 @@ module.exports = [
         component: require('src/pages/home/home'),
     },
 
+    //
+    // Shop
+    //
     {
         path: '/shop',
         name: 'shop',
         component: require('src/pages/shop/shop'),
         children: [
             {
-                path: ':category?',
+                path: 'product/:slug',
+                name: 'shop-product',
+                component: require('src/pages/shop/product/product'),
+            },
+            {
+                path: ':category?/:page?',
                 name: 'shop-category',
                 component: require('src/pages/shop/category/category'),
             },
         ],
     },
 
+    //
+    // 404
+    //
     {
         path: '*',
         name: '404',
