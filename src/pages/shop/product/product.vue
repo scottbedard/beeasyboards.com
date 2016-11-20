@@ -5,7 +5,7 @@
 <template>
     <div class="grid">
         <div class="cell mobile-12 tablet-8 images">
-            product images
+            <pre>{{ product }}</pre>
         </div>
         <div class="cell mobile-12 tablet-4 details">
             <h1>{{ product.name }}</h1>
