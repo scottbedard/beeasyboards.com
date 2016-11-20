@@ -3,12 +3,14 @@
         <v-content>
             <h1>{{ name }}</h1>
             <transition name="fade" mode="out-in">
-                <v-empty v-if="isEmpty"></v-empty>
-                <v-products-list
+                <div v-if="isEmpty">
+                    Sorry homie, we're fresh out of goods in this category.
+                </div>
+                <v-product-list
                     v-else
                     :category="category"
                     :products="products">
-                </v-products-list>
+                </v-product-list>
             </transition>
         </v-content>
     </div>
@@ -29,8 +31,7 @@
             };
         },
         components: {
-            'v-empty': require('./empty'),
-            'v-products-list': require('./products/list'),
+            'v-product-list': require('src/components/shop/product_list/list'),
         },
         computed: {
             ...mapState({

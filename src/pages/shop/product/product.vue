@@ -11,6 +11,7 @@
             <h1>{{ product.name }}</h1>
             <v-price class="price" :base="product.base_price" :current="product.price"></v-price>
             <div class="description" v-html="product.description_html" v-linkable></div>
+            <v-inventory-selector :product="product"></v-inventory-selector>
         </div>
     </div>
 </template>
@@ -32,6 +33,7 @@
             };
         },
         components: {
+            'v-inventory-selector': require('src/components/shop/inventory_selector/inventory_selector'),
             'v-price': require('src/components/shop/price'),
         },
         methods: {
