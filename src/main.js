@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './app/routes';
+import { beforeEach, afterEach } from './app/router_events';
 import { sync } from 'vuex-router-sync';
 
 //
@@ -16,6 +17,9 @@ const router = new VueRouter({
     mode: 'history',
     routes,
 });
+
+router.beforeEach(beforeEach);
+router.afterEach(afterEach);
 
 const store = require('./app/store');
 
