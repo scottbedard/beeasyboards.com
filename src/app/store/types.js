@@ -1,4 +1,17 @@
+//
+// Navigation
+//
 export const NAVIGATION_HIDE = 'NAVIGATION_HIDE';
 export const NAVIGATION_SHOW = 'NAVIGATION_SHOW';
 export const NAVIGATION_TOGGLE = 'NAVIGATION_TOGGLE';
+
+//
+// Shop
+//
 export const SHOP_SET_CATEGORIES = 'SHOP_SET_CATEGORIES';
+
+//
+// Window
+//
+export const WINDOW_SET_MINIMIZED = 'WINDOW_SET_MINIMIZED';
+export const WINDOW_SET_TITLE = 'WINDOW_SET_TITLE';

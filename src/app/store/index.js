@@ -6,6 +6,7 @@ const store = new Vuex.Store({
     modules: {
         navigation: require('./modules/navigation'),
         shop: require('./modules/shop'),
+        window: require('./modules/window'),
     },
     strict: debug,
 });

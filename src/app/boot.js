@@ -10,6 +10,7 @@ require('./directives/linkable');
 //
 require('./plugins/resources');
 require('./plugins/router');
+require('./plugins/title');
 require('./plugins/vuex');
 
 //

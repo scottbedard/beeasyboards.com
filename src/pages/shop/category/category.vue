@@ -57,13 +57,10 @@
             },
             onFetchComplete(response) {
                 this.products = JSON.parse(response.data);
-                this.setTitle();
+                this.$setTitle(':category', { category: this.name });
             },
             onFetchFailed(error) {
                 console.error(error);
-            },
-            setTitle() {
-                document.title += `- ${ this.name.toLowerCase() }`;
             },
         },
         watch: {
