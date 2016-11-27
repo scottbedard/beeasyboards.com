@@ -1,6 +1,7 @@
 <template>
-    <div>
-        <v-content>
+    <v-page>
+        <v-category-navigation></v-category-navigation>
+        <div>
             <h1>{{ name }}</h1>
             <transition name="fade" mode="out-in">
                 <div v-if="isEmpty">
@@ -12,8 +13,8 @@
                     :products="products">
                 </v-product-list>
             </transition>
-        </v-content>
-    </div>
+        </div>
+    </v-page>
 </template>
 
 <script>
@@ -31,6 +32,7 @@
             };
         },
         components: {
+            'v-category-navigation': require('src/components/shop/category_navigation'),
             'v-product-list': require('src/components/shop/product_list/list'),
         },
         computed: {

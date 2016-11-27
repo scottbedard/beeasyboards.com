@@ -9,7 +9,5 @@ export function beforeEach (to, from, next) {
 // After
 //
 export function afterEach (to, from) {
-    document.title = typeof to.meta.title !== 'undefined'
-        ? `be easy - ${ to.meta.title }`
-        : 'be easy';
+    document.title = 'be easy';
 };

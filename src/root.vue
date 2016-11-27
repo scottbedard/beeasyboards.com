@@ -34,7 +34,6 @@
                     : this.$store.state.window.title;
             },
             onTitleChanged(title) {
-                console.log ('caught change');
                 document.title = title;
             },
             watchWindowVisibility() {

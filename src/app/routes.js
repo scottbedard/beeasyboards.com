@@ -13,21 +13,15 @@ module.exports = [
     // Shop
     //
     {
-        path: '/shop',
-        name: 'shop',
-        component: require('src/pages/shop/shop'),
-        children: [
-            {
-                path: 'product/:slug',
-                name: 'shop-product',
-                component: require('src/pages/shop/product/product'),
-            },
-            {
-                path: ':category?/:page?',
-                name: 'shop-category',
-                component: require('src/pages/shop/category/category'),
-            },
-        ],
+        path: '/shop/product/:slug',
+        name: 'shop-product',
+        component: require('src/pages/shop/product/product'),
+    },
+
+    {
+        path: '/shop/:category?/:page?',
+        name: 'shop-category',
+        component: require('src/pages/shop/category/category'),
     },
 
     //

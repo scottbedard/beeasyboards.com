@@ -3,9 +3,10 @@
 </style>
 
 <template>
-    <div class="grid">
+    <v-404 v-if="product === null"></v-404>
+    <v-page v-else class="grid">
         <div class="cell mobile-12 tablet-8 images">
-            <pre>{{ product }}</pre>
+            images...
         </div>
         <div class="cell mobile-12 tablet-4 details">
             <h1>{{ product.name }}</h1>
@@ -13,7 +14,7 @@
             <div class="description" v-html="product.description_html" v-linkable></div>
             <v-inventory-selector :product="product"></v-inventory-selector>
         </div>
-    </div>
+    </v-page>
 </template>
 
 <script>
@@ -22,28 +23,28 @@
     export default {
         beforeRouteEnter(to, from, next) {
             ShopRepository.getProduct(to.params.slug)
-                .then(response => next(vm => vm.product = JSON.parse(response.data)))
-                .catch(error => {
-                    // @todo: redirect to error page
-                });
+                .then(response => next(vm => vm.onFetchComplete(response)))
+                .catch(error => next());
         },
         data() {
             return {
-                product: {},
+                product: null,
             };
         },
         components: {
+            'v-404': require('./404'),
             'v-inventory-selector': require('src/components/shop/inventory_selector/inventory_selector'),
             'v-price': require('src/components/shop/price'),
         },
         methods: {
+            onFetchComplete(response) {
+                this.product = JSON.parse(response.data);
+                this.$setTitle(':product', { product: this.product.name });
+            },
             onRouteChanged() {
-                this.product = {};
                 ShopRepository.getProduct(this.$route.params.slug)
-                    .then(response => this.product = JSON.parse(response.data))
-                    .catch(error => {
-                        // @todo: redirect to error page
-                    });
+                    .then(this.onFetchComplete)
+                    .catch(error => this.product = null);
             },
         },
         watch: {
