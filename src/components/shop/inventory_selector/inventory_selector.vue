@@ -18,6 +18,7 @@
                     :disabled="! isAvailable(value)"
                     :value="value.id">
                     {{ value.name }}
+                    <template v-if="! isAvailable(value)">(out of stock)</template>
                 </option>
             </v-select>
         </div>
