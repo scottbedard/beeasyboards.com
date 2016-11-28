@@ -1,6 +1,11 @@
 import Vue from 'vue';
 
 //
+// Prototype extention
+//
+require('./prototype');
+
+//
 // Directives
 //
 require('./directives/linkable');
