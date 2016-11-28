@@ -58,7 +58,7 @@
                     .then(() => this.isLoading = false);
             },
             onFetchComplete(response) {
-                this.products = JSON.parse(response.data);
+                this.products = response.data;
                 this.$setTitle(':category', { category: this.name });
             },
             onFetchFailed(error) {
