@@ -111,8 +111,12 @@
             },
             onClearClicked() {
                 this.$emit('clear', this.value);
+
                 this.value = this.placeholder;
-                this.$refs.select.value = this.placeholder;
+                for (let i = 0, end = this.$refs.select.options.length; i < end; i++) {
+                    let option = this.$refs.select.options[i];
+                    option.selected = option.text == this.placeholder;
+                }
             },
         },
         props: {
