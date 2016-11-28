@@ -1,21 +1,13 @@
 <style lang="scss" scoped>@import 'core';
-    div {
-        position: relative;
+    $icon-stroke-color: #ccc;
+    $icon-stroke-width: 2px;
+
+    label + div > select {
+        margin-top: 2px;
     }
 
-    span {
-        $arrow-size: 10px;
-        border-color: #ccc;
-        border-style: solid;
-        border-width: 0 2px 2px 0;
-        display: block;
-        height: $arrow-size;
-        pointer-events: none;
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-75%) rotate(45deg);
-        width: $arrow-size;
+    div {
+        position: relative;
     }
 
     select {
@@ -31,13 +23,99 @@
 
         &::-ms-expand { display: none } // hide the default dropdown arrow in IE
     }
+
+    span {
+        $arrow-size: 10px;
+        border-color: $icon-stroke-color;
+        border-style: solid;
+        border-width: 0 $icon-stroke-width $icon-stroke-width 0;
+        display: block;
+        height: $arrow-size;
+        pointer-events: none;
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-75%) rotate(45deg);
+        width: $arrow-size;
+    }
+
+    a {
+        $cross-size: 14px;
+        position: absolute;
+        display: block;
+        right: 11px;
+        top: 50%;
+        transform: translateY(-50%);
+        height: $cross-size;
+        width: $cross-size;
+        z-index: 1;
+
+        &:hover {
+            &:before,
+            &:after {
+                border-color: darken($icon-stroke-color, 25%);
+            }
+        }
+
+        &:before,
+        &:after {
+            content: '';
+            display: block;
+            border-left: 2px solid $icon-stroke-color;
+            height: $cross-size;
+            width: $icon-stroke-width;
+            position: absolute;
+            left: 50%;
+            top: 0%;
+        }
+
+        &:before { transform: rotate(45deg) }
+        &:after { transform: rotate(-45deg) }
+    }
 </style>
 
 <template>
     <div>
-        <select>
+        <select @change="onChanged" ref="select">
+            <option v-if="placeholder.length" selected disabled>{{ placeholder }}</option>
             <slot></slot>
         </select>
-        <span></span>
+        <span v-if="isEmpty"></span>
+        <a v-else href="#" @click.prevent="onClearClicked"></a>
     </div>
 </template>
+
+<script>
+    export default {
+        created() {
+            this.value = this.placeholder;
+        },
+        data() {
+            return {
+                value: '',
+            };
+        },
+        computed: {
+            isEmpty() {
+                return this.value === this.placeholder;
+            },
+        },
+        methods: {
+            onChanged(e) {
+                this.value = this.$refs.select.value;
+                this.$emit('change', this.value);
+            },
+            onClearClicked() {
+                this.$emit('clear', this.value);
+                this.value = this.placeholder;
+                this.$refs.select.value = this.placeholder;
+            },
+        },
+        props: {
+            placeholder: {
+                type: String,
+                default: '',
+            },
+        },
+    };
+</script>
