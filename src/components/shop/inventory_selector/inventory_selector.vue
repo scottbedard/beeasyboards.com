@@ -13,7 +13,7 @@
                 :placeholder="option.placeholder"
                 @change="onValueSelected"
                 @clear="onValueCleared">
-                <option v-for="value in option.values">
+                <option v-for="value in option.values" :value="value.id">
                     {{ value.name }}
                 </option>
             </v-select>
@@ -58,11 +58,14 @@
             getOptionId(option) {
                 return `option-${ option.id }`;
             },
-            onValueSelected(value) {
-                console.log ('selected', value);
+            onValueSelected(id) {
+                let value = this.values.find(model => model.id == id);
+                this.selectedValues = this.selectedValues.filter(model => model.option_id != value.option_id);
+                this.selectedValues.push(value);
             },
-            onValueCleared(value) {
-                console.log ('cleared', value);
+            onValueCleared(id) {
+                let value = this.values.find(model => model.id == id);
+                this.selectedValues = this.selectedValues.filter(model => model.id != value.id);
             },
         },
         props: [

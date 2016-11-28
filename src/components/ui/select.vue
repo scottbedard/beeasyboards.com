@@ -35,7 +35,7 @@
         position: absolute;
         right: 12px;
         top: 50%;
-        transform: translateY(-75%) rotate(45deg);
+        transform: translateY(-65%) rotate(45deg);
         width: $arrow-size;
     }
 
@@ -45,7 +45,7 @@
         display: block;
         right: 11px;
         top: 50%;
-        transform: translateY(-50%);
+        transform: translateY(-40%);
         height: $cross-size;
         width: $cross-size;
         z-index: 1;
@@ -80,8 +80,12 @@
             <option v-if="placeholder.length" selected disabled>{{ placeholder }}</option>
             <slot></slot>
         </select>
-        <span v-if="isEmpty"></span>
-        <a v-else href="#" @click.prevent="onClearClicked"></a>
+        <span v-if="isEmpty || ! clearable"></span>
+        <a
+            v-else-if="clearable"
+            href="#"
+            @click.prevent="onClearClicked">
+        </a>
     </div>
 </template>
 
@@ -112,10 +116,8 @@
             },
         },
         props: {
-            placeholder: {
-                type: String,
-                default: '',
-            },
+            clearable: { type: Boolean, default: true },
+            placeholder: { type: String, default: '' },
         },
     };
 </script>
