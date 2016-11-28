@@ -1,6 +1,8 @@
 <style lang="scss" scoped>@import 'core';
-    label {
-        display: block;
+    .option {
+        &:not(:last-of-type) {
+            margin-bottom: 12px;
+        }
     }
 </style>
 
@@ -78,6 +80,7 @@
                 this.selectedValues.push(value);
             },
             onValueCleared(id) {
+                console.log ('clearing it', id);
                 let value = this.values.find(model => model.id == id);
                 this.selectedValues = this.selectedValues.filter(model => model.id != value.id);
             },

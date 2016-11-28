@@ -33,7 +33,7 @@
         },
         components: {
             'v-404': require('./404'),
-            'v-inventory-selector': require('src/components/shop/inventory_selector/inventory_selector'),
+            'v-inventory-selector': require('src/components/shop/inventory_selector'),
             'v-price': require('src/components/shop/price'),
         },
         methods: {
