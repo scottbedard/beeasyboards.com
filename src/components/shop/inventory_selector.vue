@@ -90,7 +90,7 @@
                 return `option-${ option.id }`;
             },
             onAddToCartClicked() {
-                console.log ('ok...');
+                this.$emit('add', this.selectedInventory, 1);
             },
             onValueSelected(id) {
                 let value = this.values.find(model => model.id == id);

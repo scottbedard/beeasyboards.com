@@ -12,7 +12,10 @@
             <h1>{{ product.name }}</h1>
             <v-price class="price" :base="product.base_price" :current="product.price"></v-price>
             <div class="description" v-html="product.description_html" v-linkable></div>
-            <v-inventory-selector :product="product"></v-inventory-selector>
+            <v-inventory-selector
+                :product="product"
+                @add="onAddToCart">
+            </v-inventory-selector>
         </div>
     </v-page>
 </template>
@@ -37,6 +40,9 @@
             'v-price': require('src/components/shop/price'),
         },
         methods: {
+            onAddToCart(inventory, quantity) {
+                console.log ('adding', inventory, quantity);
+            },
             onFetchComplete(response) {
                 this.product = response.data;
                 this.$setTitle(':product', { product: this.product.name });
