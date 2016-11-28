@@ -13,12 +13,14 @@
                 :placeholder="option.placeholder"
                 @change="onValueSelected"
                 @clear="onValueCleared">
-                <option v-for="value in option.values" :value="value.id">
+                <option
+                    v-for="value in option.values"
+                    :disabled="! isAvailable(value)"
+                    :value="value.id">
                     {{ value.name }}
                 </option>
             </v-select>
         </div>
-        <pre>{{ selectedValues }}</pre>
     </div>
 </template>
 
@@ -30,18 +32,10 @@
             };
         },
         computed: {
-            possibleInventories() {
-                return this.product.inventories.filter(inventory => {
-                    // let valueIds = inventory.option_values.map(value => value.id);
-                    //
-                    // for (let value of this.selectedValues) {
-                    //     if (valueIds.indexOf(selectedValueId) === -1) {
-                    //         return false;
-                    //     }
-                    // }
-
-                    return true;
-                });
+            availableInventoryValueIds() {
+                return this.product.inventories
+                    .filter(inventory => inventory.quantity > 0)
+                    .map(inventory => inventory.option_values.map(value => value.id));
             },
             values() {
                 let values = [];
@@ -55,6 +49,25 @@
             },
         },
         methods: {
+            isAvailable(value) {
+                // determine what the selections would be if this value was included
+                let possibleSelection = this.selectedValues
+                    .filter(model => model.option_id != value.option_id)
+                    .map(model => model.id);
+
+                if (! possibleSelection.find(model => model.id == value.id)) {
+                    possibleSelection.push(value.id);
+                }
+
+                // determine if our possible selection is part of the available inventories
+                for (let valueIds of this.availableInventoryValueIds) {
+                    if (possibleSelection.intersect(valueIds).length >= possibleSelection.length) {
+                        return true;
+                    }
+                }
+
+                return false;
+            },
             getOptionId(option) {
                 return `option-${ option.id }`;
             },
