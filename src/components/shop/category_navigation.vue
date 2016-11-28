@@ -67,7 +67,7 @@
                 this.$router.push({ name: 'shop-category', params: { category }});
             },
             onFetchComplete(response) {
-                this.$store.commit('SHOP_SET_CATEGORIES', JSON.parse(response.body));
+                this.$store.commit('SHOP_SET_CATEGORIES', response.data);
             },
             onFetchFailed(error) {
                 console.log ('error', error);

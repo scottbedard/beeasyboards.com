@@ -38,7 +38,7 @@
         },
         methods: {
             onFetchComplete(response) {
-                this.product = JSON.parse(response.data);
+                this.product = response.data;
                 this.$setTitle(':product', { product: this.product.name });
             },
             onRouteChanged() {

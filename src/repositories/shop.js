@@ -1,16 +1,21 @@
 import Vue from 'vue';
+import { normalizeResponse } from 'src/app/utilities/response';
 
 export default {
     getCategory(slug) {
-        return Vue.http.get(`/api/bedard/shop/categories/${ slug }`);
+        let endpoint = `/api/bedard/shop/categories/${ slug }`;
+        return Vue.http.get(endpoint).then(normalizeResponse);
     },
     getCategoryProducts(slug, params = []) {
-        return Vue.http.get(`/api/bedard/shop/categories/${ slug }/products`, params);
+        let endpoint = `/api/bedard/shop/categories/${ slug }/products`;
+        return Vue.http.get(endpoint, params).then(normalizeResponse);
     },
     getCategories() {
-        return Vue.http.get('/api/bedard/shop/categories');
+        let endpoint = '/api/bedard/shop/categories';
+        return Vue.http.get(endpoint).then(normalizeResponse);
     },
     getProduct(slug) {
-        return Vue.http.get(`/api/bedard/shop/products/${ slug }`);
+        let endpoint = `/api/bedard/shop/products/${ slug }`;
+        return Vue.http.get(endpoint).then(normalizeResponse);
     },
 };
