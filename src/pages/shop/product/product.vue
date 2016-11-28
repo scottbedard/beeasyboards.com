@@ -5,10 +5,10 @@
 <template>
     <v-404 v-if="product === null"></v-404>
     <v-page v-else class="grid">
-        <div class="cell mobile-12 tablet-8 images">
+        <div class="cell mobile-12 tablet-9 images">
             <pre>{{ product }}</pre>
         </div>
-        <div class="cell mobile-12 tablet-4 details">
+        <div class="cell mobile-12 tablet-3 details">
             <h1>{{ product.name }}</h1>
             <v-price class="price" :base="product.base_price" :current="product.price"></v-price>
             <div class="description" v-html="product.description_html" v-linkable></div>

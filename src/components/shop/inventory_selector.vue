@@ -1,8 +1,6 @@
 <style lang="scss" scoped>@import 'core';
     .option {
-        &:not(:last-of-type) {
-            margin-bottom: 12px;
-        }
+        margin-bottom: 12px;
     }
 </style>
 
@@ -24,6 +22,11 @@
                 </option>
             </v-select>
         </div>
+        <v-button
+            :disabled="! selectedInventory || selectedInventory.quantity <= 0"
+            @click="onAddToCartClicked">
+            Add to cart
+        </v-button>
     </div>
 </template>
 
@@ -39,6 +42,18 @@
                 return this.product.inventories
                     .filter(inventory => inventory.quantity > 0)
                     .map(inventory => inventory.option_values.map(value => value.id));
+            },
+            selectedInventory() {
+                let selectedValueIds = this.selectedValues.map(value => value.id);
+
+                for (let inventory of this.product.inventories) {
+                    let inventoryValueIds = inventory.option_values.map(value => value.id);
+                    if (inventoryValueIds.intersect(selectedValueIds).length === inventoryValueIds.length) {
+                        return inventory;
+                    }
+                }
+
+                return null;
             },
             values() {
                 let values = [];
@@ -74,13 +89,15 @@
             getOptionId(option) {
                 return `option-${ option.id }`;
             },
+            onAddToCartClicked() {
+                console.log ('ok...');
+            },
             onValueSelected(id) {
                 let value = this.values.find(model => model.id == id);
                 this.selectedValues = this.selectedValues.filter(model => model.option_id != value.option_id);
                 this.selectedValues.push(value);
             },
             onValueCleared(id) {
-                console.log ('clearing it', id);
                 let value = this.values.find(model => model.id == id);
                 this.selectedValues = this.selectedValues.filter(model => model.id != value.id);
             },

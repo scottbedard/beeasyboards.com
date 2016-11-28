@@ -17,6 +17,10 @@
         &:hover {
             background-color: $off-black;
         }
+
+        &:disabled {
+            background-color: lighten($off-black, 50%);
+        }
     }
 
     .outlined {
@@ -33,34 +37,30 @@
     }
 </style>
 
+<template>
+    <!-- Anchor -->
+    <a v-if="href" :href="href" @click="$emit('click')">
+        <slot></slot>
+    </a>
+
+    <!-- Router link -->
+    <router-link v-else-if="route" :to="route">
+        <slot></slot>
+    </router-link>
+
+    <!-- Button -->
+    <button
+        v-else
+        :disabled="disabled"
+        @click="$emit('click')">
+        <slot></slot>
+    </button>
+</template>
+
 <script>
     export default {
-        render(h) {
-            if (this.href !== null) return this.renderAnchor(h);
-            if (this.route !== null) return this.renderRouterLink(h);
-            else return this.renderButton(h);
-        },
-        methods: {
-            emit() {
-                return this.$emit.bind(this, ...arguments);
-            },
-            renderAnchor(h) {
-                return <a href={ this.href } on-click={ this.emit('click') }>
-                    { this.$slots.default }
-                </a>;
-            },
-            renderButton(h) {
-                return <button on-click={ this.emit('click') }>
-                    { this.$slots.default }
-                </button>;
-            },
-            renderRouterLink(h) {
-                return <router-link to={ this.route }>
-                    { this.$slots.default }
-                </router-link>;
-            },
-        },
         props: {
+            disabled: { type: Boolean, default: false },
             href: { default: null },
             route: { default: null },
         },
