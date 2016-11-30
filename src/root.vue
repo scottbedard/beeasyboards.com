@@ -17,6 +17,7 @@
 
     export default {
         created() {
+            this.storeInitialData();
             this.watchWindowVisibility();
         },
         components: {
@@ -35,6 +36,9 @@
             },
             onTitleChanged(title) {
                 document.title = title;
+            },
+            storeInitialData() {
+                this.$store.commit('SHOP_INITIALIZE_CART', BeEasyData.cart);
             },
             watchWindowVisibility() {
                 document.addEventListener('visibilitychange', () => {
