@@ -3,6 +3,17 @@ url = "/:all?*"
 description = "Do not modify"
 is_hidden = 0
 ==
+use Bedard\Shop\Models\Cart;
+use Bedard\Shop\Repositories\CartRepository;
+
+function onStart() {
+    $cartRepository = new CartRepository;
+
+    $this->page->data = json_encode([
+        'cart' => $cartRepository->exists() ? $cartRepository->loadCart() : new Cart,
+    ]);
+}
+==
 <!-- htmlmin:ignore -->
 <!DOCTYPE html>
 <html>
@@ -13,6 +24,7 @@ is_hidden = 0
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
     </head>
     <body>
+        <script data-app>var UserData = {{ this.page.data | raw }}</script>
         <div id="app"></div>
         <!-- built files will be auto injected -->
     </body>
