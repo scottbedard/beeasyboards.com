@@ -23,7 +23,7 @@
 <template>
     <div>
         <router-link v-for="link in navigation" :to="link.route">
-            <span v-if="link.isCart">{{ link.name }} (0)</span>
+            <span v-if="link.isCart">{{ link.name }} ({{ cartItems }})</span>
             <span v-else>{{ link.name }}</span>
         </router-link>
     </div>
@@ -31,9 +31,13 @@
 
 <script>
     import Navigation from 'src/app/navigation';
+    import { mapGetters } from 'vuex';
 
     export default {
         computed: {
+            ...mapGetters({
+                cartItems: 'SHOP_CART_ITEMS',
+            }),
             navigation() {
                 return Navigation;
             },
