@@ -11,11 +11,15 @@
         @include transition(background-color);
 
         &:active {
-            transform: translateY(1px);
+            &:not(:disabled) {
+                transform: translateY(1px);
+            }
         }
 
         &:hover {
             background-color: $off-black;
+            color: lighten($off-white, 2%);
+            text-decoration: none;
         }
 
         &:disabled {

@@ -5,7 +5,9 @@
     }
 
     div {
-        display: inline-block;
+        align-items: center;
+        display: inline-flex;
+        justify-content: center;
     }
 
     svg {
@@ -44,7 +46,7 @@
         props: {
             color: { type: String, default: '#333' },
             size: { type: String, default: '40px' },
-            thickness: { type: Number, default: 5.25 },
+            thickness: { default: 5.25 },
         },
     };
 </script>

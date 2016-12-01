@@ -12,15 +12,7 @@
 
     select {
         appearance: none; // hide the default dropdown in most browsers
-        background-color: transparent;
-        border-radius: 3px;
-        border: 1px solid #ccc;
         cursor: pointer;
-        padding: 8px;
-        text-indent: 1px;
-        text-overflow: '';
-        width: 100%;
-
         &::-ms-expand { display: none } // hide the default dropdown arrow in IE
     }
 
@@ -76,7 +68,7 @@
 
 <template>
     <div>
-        <select @change="onChanged" ref="select">
+        <select @change="onChanged" class="form-control" ref="select">
             <option v-if="placeholder.length" selected disabled>{{ placeholder }}</option>
             <slot></slot>
         </select>

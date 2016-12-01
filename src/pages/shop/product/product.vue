@@ -1,5 +1,14 @@
 <style lang="scss" scoped>@import 'core';
+    .added-to-cart {
+        .message {
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
 
+        span {
+            margin-left: 4px;
+        }
+    }
 </style>
 
 <template>
@@ -12,11 +21,22 @@
             <h1>{{ product.name }}</h1>
             <v-price class="price" :base="product.base_price" :current="product.price"></v-price>
             <div class="description" v-html="product.description_html" v-linkable></div>
-            <v-inventory-selector
-                :product="product"
-                :is-loading="addToCartIsLoading"
-                @add="addToCart">
-            </v-inventory-selector>
+            <transition name="fade" mode="out-in">
+                <v-inventory-selector
+                    v-if="! isAdded"
+                    :product="product"
+                    :is-loading="addToCartIsLoading"
+                    @add="addToCart">
+                </v-inventory-selector>
+                <div v-else class="added-to-cart">
+                    <div class="message">{{ product.name }} was added to your cart!</div>
+                    <div>
+                        <v-button route="/cart">View cart</v-button>
+                        <span>or</span>
+                        <a href="#" @click.prevent="onAddMoreClicked">add more</a>
+                    </div>
+                </div>
+            </transition>
         </div>
     </v-page>
 </template>
@@ -33,6 +53,7 @@
         data() {
             return {
                 addToCartIsLoading: false,
+                isAdded: false,
                 product: null,
             };
         },
@@ -49,8 +70,12 @@
                     .catch(this.onAddFailed)
                     .then(() => this.addToCartIsLoading = false);
             },
+            onAddMoreClicked() {
+                this.isAdded = false;
+            },
             onAddSucceeded(response) {
                 this.$store.commit('SHOP_CART_SET_ITEM', response.data);
+                this.isAdded = true;
             },
             onAddFailed(error) {
                 console.log ('failed');

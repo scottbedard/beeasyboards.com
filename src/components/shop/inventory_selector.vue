@@ -1,11 +1,24 @@
 <style lang="scss" scoped>@import 'core';
     .option {
         margin-bottom: 12px;
+
+        label {
+            display: block;
+        }
     }
 </style>
 
 <template>
-    <div>
+    <form @submit.prevent="onAddToCartClicked">
+        <div class="option">
+            <label for="quantity">Quantity</label>
+            <v-input
+                min="0"
+                type="number"
+                v-model="quantity"
+                :prevent-enter="formIsDisabled">
+            </v-input>
+        </div>
         <div v-for="option in product.options" class="option">
             <label :for="getOptionId(option)">{{ option.name }}</label>
             <v-select
@@ -23,12 +36,12 @@
             </v-select>
         </div>
         <v-button
-            :disabled="! selectedInventory || selectedInventory.quantity <= 0"
-            @click="onAddToCartClicked">
-            <v-spinner v-if="isLoading"></v-spinner>
-            <span>Add to cart</span>
+            :disabled="formIsDisabled"
+            type="submit">
+            <v-button-spinner v-if="isLoading"></v-button-spinner>
+            <span>{{ addButtonText }}</span>
         </v-button>
-    </div>
+    </form>
 </template>
 
 <script>
@@ -36,13 +49,24 @@
         data() {
             return {
                 selectedValues: [],
+                quantity: 1,
             };
         },
         computed: {
+            addButtonText() {
+                return this.isLoading
+                    ? 'Adding...'
+                    : 'Add to cart';
+            },
             availableInventoryValueIds() {
                 return this.product.inventories
                     .filter(inventory => inventory.quantity > 0)
                     .map(inventory => inventory.option_values.map(value => value.id));
+            },
+            formIsDisabled() {
+                return this.isLoading
+                    || ! this.selectedInventory
+                    || this.selectedInventory.quantity <= 0;
             },
             selectedInventory() {
                 let selectedValueIds = this.selectedValues.map(value => value.id);
@@ -91,7 +115,7 @@
                 return `option-${ option.id }`;
             },
             onAddToCartClicked() {
-                this.$emit('add', this.selectedInventory, 1);
+                this.$emit('add', this.selectedInventory, this.quantity);
             },
             onValueSelected(id) {
                 let value = this.values.find(model => model.id == id);
