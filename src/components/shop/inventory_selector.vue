@@ -25,7 +25,8 @@
         <v-button
             :disabled="! selectedInventory || selectedInventory.quantity <= 0"
             @click="onAddToCartClicked">
-            Add to cart
+            <v-spinner v-if="isLoading"></v-spinner>
+            <span>Add to cart</span>
         </v-button>
     </div>
 </template>
@@ -103,6 +104,7 @@
             },
         },
         props: [
+            'isLoading',
             'product',
         ],
     };

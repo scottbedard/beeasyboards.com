@@ -6,4 +6,5 @@ export default {
     'v-content': require('./layout/content'),
     'v-page': require('./layout/page'),
     'v-select': require('./ui/select'),
+    'v-spinner': require('./ui/spinner'),
 };

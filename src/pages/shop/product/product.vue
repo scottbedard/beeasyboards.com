@@ -14,6 +14,7 @@
             <div class="description" v-html="product.description_html" v-linkable></div>
             <v-inventory-selector
                 :product="product"
+                :is-loading="addToCartIsLoading"
                 @add="addToCart">
             </v-inventory-selector>
         </div>
@@ -31,6 +32,7 @@
         },
         data() {
             return {
+                addToCartIsLoading: false,
                 product: null,
             };
         },
@@ -41,9 +43,11 @@
         },
         methods: {
             addToCart(inventory, quantity) {
+                this.addToCartIsLoading = true;
                 ShopRepository.addItem(inventory.id, quantity)
                     .then(this.onAddSucceeded)
-                    .catch(this.onAddFailed);
+                    .catch(this.onAddFailed)
+                    .then(() => this.addToCartIsLoading = false);
             },
             onAddSucceeded(response) {
                 this.$store.commit('SHOP_CART_SET_ITEM', response.data);
