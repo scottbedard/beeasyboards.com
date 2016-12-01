@@ -14,7 +14,7 @@
             <div class="description" v-html="product.description_html" v-linkable></div>
             <v-inventory-selector
                 :product="product"
-                @add="onAddToCart">
+                @add="addToCart">
             </v-inventory-selector>
         </div>
     </v-page>
@@ -40,8 +40,17 @@
             'v-price': require('src/components/shop/price'),
         },
         methods: {
-            onAddToCart(inventory, quantity) {
-                console.log ('adding', inventory, quantity);
+            addToCart(inventory, quantity) {
+                ShopRepository.addItem(inventory.id, quantity)
+                    .then(this.onAddSucceeded)
+                    .catch(this.onAddFailed);
+            },
+            onAddSucceeded(response) {
+                this.$store.commit('SHOP_CART_SET_ITEM', response.data);
+            },
+            onAddFailed(error) {
+                console.log ('failed');
+                console.error(error);
             },
             onFetchComplete(response) {
                 this.product = response.data;

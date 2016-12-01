@@ -8,9 +8,10 @@ export const NAVIGATION_TOGGLE = 'NAVIGATION_TOGGLE';
 //
 // Shop
 //
+export const SHOP_CART_ITEMS = 'SHOP_CART_ITEMS';
+export const SHOP_CART_SET_ITEM = 'SHOP_CART_SET_ITEM';
 export const SHOP_INITIALIZE_CART = 'SHOP_INITIALIZE_CART';
 export const SHOP_SET_CATEGORIES = 'SHOP_SET_CATEGORIES';
-export const SHOP_CART_ITEMS = 'SHOP_CART_ITEMS';
 
 //
 // Window
