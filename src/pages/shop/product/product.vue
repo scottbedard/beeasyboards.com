@@ -13,7 +13,7 @@
 
 <template>
     <v-404 v-if="product === null"></v-404>
-    <v-page v-else class="grid">
+    <v-page v-else class="grid padded">
         <div class="cell mobile-12 large-phone-8 tablet-9 images">
             <v-image-gallery :product="product"></v-image-gallery>
         </div>
