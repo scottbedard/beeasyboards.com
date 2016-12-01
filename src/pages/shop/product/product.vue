@@ -14,10 +14,10 @@
 <template>
     <v-404 v-if="product === null"></v-404>
     <v-page v-else class="grid">
-        <div class="cell mobile-12 tablet-9 images">
-            <pre>{{ product }}</pre>
+        <div class="cell mobile-12 large-phone-8 tablet-9 images">
+            <v-image-gallery :product="product"></v-image-gallery>
         </div>
-        <div class="cell mobile-12 tablet-3 details">
+        <div class="cell mobile-12 large-phone-4 tablet-3 details">
             <h1>{{ product.name }}</h1>
             <v-price class="price" :base="product.base_price" :current="product.price"></v-price>
             <div class="description" v-html="product.description_html" v-linkable></div>
@@ -59,6 +59,7 @@
         },
         components: {
             'v-404': require('./404'),
+            'v-image-gallery': require('src/components/shop/image_gallery'),
             'v-inventory-selector': require('src/components/shop/inventory_selector'),
             'v-price': require('src/components/shop/price'),
         },
