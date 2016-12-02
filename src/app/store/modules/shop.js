@@ -6,7 +6,7 @@ module.exports = {
         categories: [],
     },
     getters: {
-        [types.SHOP_CART_ITEMS]: state => {
+        [types.SHOP_CART_ITEM_COUNT]: state => {
             return state.cart.items
                 .map(item => item.quantity)
                 .reduce((a, b) => a + b, 0);

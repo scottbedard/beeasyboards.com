@@ -1,6 +1,15 @@
 module.exports = [
 
     //
+    // Cart
+    //
+    {
+        path: '/cart',
+        name: 'cart',
+        component: require('src/pages/cart/cart'),
+    },
+
+    //
     // Home
     //
     {

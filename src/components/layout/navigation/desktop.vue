@@ -36,7 +36,7 @@
     export default {
         computed: {
             ...mapGetters({
-                cartItems: 'SHOP_CART_ITEMS',
+                cartItems: 'SHOP_CART_ITEM_COUNT',
             }),
             navigation() {
                 return Navigation;

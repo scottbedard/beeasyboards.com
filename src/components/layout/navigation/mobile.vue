@@ -72,7 +72,7 @@
         },
         computed: {
             ...mapGetters({
-                cartItems: 'SHOP_CART_ITEMS',
+                cartItems: 'SHOP_CART_ITEM_COUNT',
             }),
             ...mapState({
                 isVisible: state => state.navigation.isExpanded,
