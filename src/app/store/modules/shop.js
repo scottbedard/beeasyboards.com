@@ -6,6 +6,14 @@ module.exports = {
         categories: [],
     },
     getters: {
+        [types.SHOP_CART_TOTAL]: ( state, getters ) => {
+            let total = state.cart.items.reduce((a, b) => {
+                let aTotal = a.inventory.product.price * a.inventory.quantity;
+                let bTotal = b.inventory.product.price * b.inventory.quantity;
+
+                return aTotal + bTotal;
+            }, 0);
+        },
         [types.SHOP_CART_ITEM_COUNT]: state => {
             return state.cart.items
                 .map(item => item.quantity)
@@ -18,7 +26,6 @@ module.exports = {
 
             if (! existingItem) {
                 delete item.cart;
-                delete item.inventory;
                 state.cart.items.push(item);
             } else {
                 existingItem.quantity = item.quantity;
@@ -32,7 +39,6 @@ module.exports = {
 
             for (let item of cart.items) {
                 delete item.cart;
-                delete item.inventory;
             }
 
             state.cart = cart;

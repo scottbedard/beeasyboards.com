@@ -5,6 +5,7 @@
 <template>
     <div>
         Items
+        <pre>{{ total }}</pre>
         <pre>{{ items }}</pre>
     </div>
 </template>
@@ -14,6 +15,9 @@
 
     export default {
         computed: {
+            ...mapGetters({
+                total: 'SHOP_CART_TOTAL',
+            }),
             items() {
                 return this.$store.state.shop.cart.items;
             },
