@@ -9,7 +9,10 @@
 </style>
 
 <template>
-    <form @submit.prevent="onAddToCartClicked">
+    <div v-if="isOutOfStock">
+        <strong>Out of stock</strong>
+    </div>
+    <form @submit.prevent="onAddToCartClicked" v-else>
         <div class="option">
             <label for="quantity">Quantity</label>
             <v-input
@@ -67,6 +70,11 @@
                 return this.isLoading
                     || ! this.selectedInventory
                     || this.selectedInventory.quantity <= 0;
+            },
+            isOutOfStock() {
+                return this.product.inventories
+                    .map(inventory => inventory.quantity)
+                    .reduce((a, b) => a + b, 0) === 0;
             },
             selectedInventory() {
                 let selectedValueIds = this.selectedValues.map(value => value.id);

@@ -1,4 +1,9 @@
 <style lang="scss" scoped>@import 'core';
+    .price {
+        font-size: 1.25em;
+        font-weight: 300;
+    }
+
     .added-to-cart {
         .message {
             font-weight: bold;
