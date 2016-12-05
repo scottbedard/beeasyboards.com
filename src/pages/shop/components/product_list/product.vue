@@ -15,7 +15,7 @@
 <script>
     export default {
         components: {
-            'v-price': require('src/components/shop/price'),
+            'v-price': require('../price'),
         },
         props: [
             'product',

@@ -32,8 +32,8 @@
             };
         },
         components: {
-            'v-category-navigation': require('src/components/shop/category_navigation'),
-            'v-product-list': require('src/components/shop/product_list/list'),
+            'v-category-navigation': require('../components/category_navigation'),
+            'v-product-list': require('../components/product_list/list'),
         },
         computed: {
             ...mapState({

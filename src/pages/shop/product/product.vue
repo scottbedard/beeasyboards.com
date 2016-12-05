@@ -64,9 +64,9 @@
         },
         components: {
             'v-404': require('./404'),
-            'v-image-gallery': require('src/components/shop/image_gallery'),
-            'v-inventory-selector': require('src/components/shop/inventory_selector'),
-            'v-price': require('src/components/shop/price'),
+            'v-image-gallery': require('../components/image_gallery'),
+            'v-inventory-selector': require('../components/inventory_selector'),
+            'v-price': require('../components/price'),
         },
         methods: {
             addToCart(inventory, quantity) {
