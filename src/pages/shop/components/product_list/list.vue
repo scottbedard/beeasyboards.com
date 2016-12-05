@@ -18,9 +18,10 @@
 
 <template>
     <div>
+        currentPage: {{ currentPage }}
         <transition-group name="fade" mode="out-in" tag="div" class="transition-group">
             <v-product
-                v-for="product in products"
+                v-for="product in productsOnCurrentPage"
                 class="v-product"
                 :key="product.id"
                 :class="[columnsClass]"
@@ -36,10 +37,34 @@
             'v-product': require('./product'),
         },
         computed: {
+            cols() {
+                return typeof this.category !== 'undefined'
+                    ? this.category.product_columns
+                    : 3;
+            },
             columnsClass() {
                 return typeof this.category !== 'undefined'
                     ? `columns-${ this.category.product_columns }`
                     : 'columns-1';
+            },
+            currentPage() {
+                let page = this.$route.query.page || 1;
+
+                return Number(page);
+            },
+            rows() {
+                return typeof this.category !== 'undefined'
+                    ? this.category.product_rows
+                    : 3;
+            },
+            productsOnCurrentPage() {
+                let start = this.productsPerPage * (this.currentPage - 1);
+                let end = start + (this.productsPerPage || this.category.products_count);
+
+                return this.products.slice(start, end);
+            },
+            productsPerPage() {
+                return this.cols * this.rows;
             },
         },
         props: [

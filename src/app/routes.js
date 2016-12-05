@@ -28,7 +28,7 @@ module.exports = [
     },
 
     {
-        path: '/shop/:category?/:page?',
+        path: '/shop/:category?',
         name: 'shop-category',
         component: require('src/pages/shop/category/category'),
     },
