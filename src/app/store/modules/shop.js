@@ -34,6 +34,13 @@ module.exports = {
         },
     },
     mutations: {
+        [types.SHOP_CART_ITEM_REMOVED] (state, item) {
+            let index = state.cart.items.indexOf(item);
+
+            if (index > -1) {
+                state.cart.items.splice(index, 1);
+            }
+        },
         [types.SHOP_CART_SET_ITEM] (state, item) {
             let existingItem = state.cart.items.find(model => model.id == item.id);
 
