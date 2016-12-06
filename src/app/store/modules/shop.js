@@ -8,10 +8,23 @@ module.exports = {
     getters: {
         [types.SHOP_CART_TOTAL]: ( state, getters ) => {
             let total = state.cart.items.reduce((a, b) => {
-                let aTotal = a.inventory.product.price * a.inventory.quantity;
-                let bTotal = b.inventory.product.price * b.inventory.quantity;
+                let aPrice = typeof a.inventory !== 'undefined'
+                    ? a.inventory.product.price
+                    : 0;
 
-                return aTotal + bTotal;
+                let aQuantity = typeof a.inventory !== 'undefined'
+                    ? a.inventory.quantity
+                    : 0;
+
+                let bPrice = typeof b.inventory !== 'undefined'
+                    ? b.inventory.product.price
+                    : 0;
+
+                let bQuantity = typeof b.inventory !== 'undefined'
+                    ? b.inventory.quantity
+                    : 0;
+
+                return (aPrice * aQuantity) + (bPrice * bQuantity);
             }, 0);
         },
         [types.SHOP_CART_ITEM_COUNT]: state => {

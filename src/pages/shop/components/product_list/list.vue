@@ -1,5 +1,5 @@
 <style lang="scss" scoped>@import 'core';
-    .transition-group {
+    .products {
         display: flex;
         flex-wrap: wrap;
     }
@@ -19,7 +19,7 @@
 <template>
     <div>
         currentPage: {{ currentPage }}
-        <transition-group name="fade" mode="out-in" tag="div" class="transition-group">
+        <div class="products">
             <v-product
                 v-for="product in productsOnCurrentPage"
                 class="v-product"
@@ -27,13 +27,22 @@
                 :class="[columnsClass]"
                 :product="product">
             </v-product>
-        </transition-group>
+        </div>
+        <v-pagination
+            v-if="lastPage > 1"
+            :category="category"
+            :current-page="currentPage"
+            :last-page="lastPage"
+            :products-per-page="productsPerPage"
+            :total-products="totalProducts"
+        ></v-pagination>
     </div>
 </template>
 
 <script>
     export default {
         components: {
+            'v-pagination': require('./pagination'),
             'v-product': require('./product'),
         },
         computed: {
@@ -52,6 +61,9 @@
 
                 return Number(page);
             },
+            lastPage() {
+                return Math.ceil(this.totalProducts / this.productsPerPage);
+            },
             rows() {
                 return typeof this.category !== 'undefined'
                     ? this.category.product_rows
@@ -65,6 +77,11 @@
             },
             productsPerPage() {
                 return this.cols * this.rows;
+            },
+            totalProducts() {
+                return typeof this.category !== 'undefined'
+                    ? this.category.products_count
+                    : 0;
             },
         },
         props: [
