@@ -62,7 +62,9 @@
                     .catch(this.onRemoveFailed);
             },
             onRemoveFailed(error) {
-                console.error(error);
+                let errorMessage = 'Whoa, something went wrong, please try again.';
+
+                this.$alert(errorMessage, { type: 'error' });
             },
             onRemoveSuccess(response) {
                 this.$store.commit('SHOP_CART_ITEM_REMOVED', this.item);

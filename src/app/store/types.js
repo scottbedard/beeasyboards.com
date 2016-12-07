@@ -1,4 +1,10 @@
 //
+// Alert
+//
+export const ALERT_PUSH = 'ALERT_PUSH';
+export const ALERT_REMOVE = 'ALERT_REMOVE';
+
+//
 // Navigation
 //
 export const NAVIGATION_HIDE = 'NAVIGATION_HIDE';

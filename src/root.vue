@@ -9,6 +9,7 @@
         <transition name="fade" mode="out-in">
             <router-view></router-view>
         </transition>
+        <v-alert></v-alert>
     </div>
 </template>
 
@@ -21,6 +22,7 @@
             this.watchWindowVisibility();
         },
         components: {
+            'v-alert': require('src/components/layout/alert'),
             'v-header': require('src/components/layout/header'),
             'v-navigation-mobile': require('src/components/layout/navigation/mobile'),
         },

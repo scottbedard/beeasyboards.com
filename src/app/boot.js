@@ -13,6 +13,7 @@ require('./directives/linkable');
 //
 // Plugins
 //
+require('./plugins/alert');
 require('./plugins/resources');
 require('./plugins/router');
 require('./plugins/title');
