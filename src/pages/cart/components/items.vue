@@ -31,16 +31,14 @@
             <v-item
                 class="row"
                 v-for="item in items"
-                :item="item"
-                @remove="onRemoveItem">
+                :item="item">
             </v-item>
         </div>
     </div>
 </template>
 
 <script>
-    import ShopRepository from 'src/repositories/shop';
-    import { mapGetters, mapState } from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
         components: {
@@ -55,17 +53,7 @@
             },
         },
         methods: {
-            onRemoveItem(item) {
-                ShopRepository.removeItem(item.inventory_id)
-                    .then(response => this.onItemRemoveSuccess(response, item))
-                    .catch(this.onItemRemoveFailed);
-            },
-            onItemRemoveFailed(error) {
-                console.error(error);
-            },
-            onItemRemoveSuccess(response, item) {
-                this.$store.commit('SHOP_CART_ITEM_REMOVED', item);
-            },
+
         },
     };
 </script>

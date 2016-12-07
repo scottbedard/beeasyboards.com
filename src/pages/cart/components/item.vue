@@ -1,18 +1,35 @@
 <style lang="scss" scoped>@import 'core';
-    .cell {
-        @include bp(tablet) {
-            display: table-cell;
+    .thumbnail {
+        display: inline-block;
+
+        img {
+            max-width: 100px;
+            height: auto;
         }
+    }
+
+    .details {
+        display: inline-block;
     }
 </style>
 
 <template>
     <div>
-        <div class="cell">{{ product.name }}</div>
-        <div class="cell">
+        <div class="cell product">
+            <div class="thumbnail">
+                <img
+                    v-if="thumbnail"
+                    :src="thumbnail.path"
+                    :alt="thumbnail.title || product.name" />
+            </div>
+            <div class="details">
+                <div class="product-name">{{ product.name }}</div>
+            </div>
+        </div>
+        <div class="cell quantity">
             <v-input :value="item.quantity" />
         </div>
-        <div class="cell">
+        <div class="cell remove">
             <a href="#" @click="onRemoveClicked">
                 Remove
             </a>
@@ -21,7 +38,8 @@
 </template>
 
 <script>
-    import { mapGetters, mapState } from 'vuex';
+    import ShopRepository from 'src/repositories/shop';
+    // import { mapGetters, mapState } from 'vuex';
 
     export default {
         computed: {
@@ -29,12 +47,25 @@
                 return this.item.inventory;
             },
             product() {
-                return this.item.inventory.product;
+                return this.inventory.product;
+            },
+            thumbnail() {
+                return this.product.thumbnails.length > 0
+                    ? this.product.thumbnails[0]
+                    : false;
             },
         },
         methods: {
             onRemoveClicked() {
-                this.$emit('remove', this.item);
+                ShopRepository.removeItem(this.item.inventory_id)
+                    .then(this.onRemoveSuccess)
+                    .catch(this.onRemoveFailed);
+            },
+            onRemoveFailed(error) {
+                console.error(error);
+            },
+            onRemoveSuccess(response) {
+                this.$store.commit('SHOP_CART_ITEM_REMOVED', this.item);
             },
         },
         props: [
