@@ -1,4 +1,31 @@
 <style lang="scss" scoped>@import 'core';
+    .row {
+        @include bp(tablet) {
+            display: table-row;
+        }
+    }
+
+    .cell {
+        @include bp(tablet) {
+            display: table-cell;
+            &.quantity, &.remove {
+                text-align: center;
+            }
+        }
+
+        .product-flex {
+            align-items: center;
+            display: flex;
+            border: 1px solid blue;
+        }
+
+        .cell-flex {
+            align-items: center;
+            display: flex;
+            border: 1px solid blue;
+        }
+    }
+
     .thumbnail {
         display: inline-block;
 
@@ -14,25 +41,31 @@
 </style>
 
 <template>
-    <div>
+    <div class="row">
         <div class="cell product">
-            <div class="thumbnail">
-                <img
-                    v-if="thumbnail"
-                    :src="thumbnail.path"
-                    :alt="thumbnail.title || product.name" />
-            </div>
-            <div class="details">
-                <div class="product-name">{{ product.name }}</div>
+            <div class="product-flex">
+                <div class="thumbnail">
+                    <img
+                        v-if="thumbnail"
+                        :src="thumbnail.path"
+                        :alt="thumbnail.title || product.name" />
+                </div>
+                <div class="details">
+                    <div class="product-name">{{ product.name }}</div>
+                </div>
             </div>
         </div>
         <div class="cell quantity">
-            <v-input :value="item.quantity" />
+            <div class="cell-flex">
+                <input :value="item.quantity" min="0" :max="inventory.quantity" type="number" />
+            </div>
         </div>
         <div class="cell remove">
-            <a href="#" @click="onRemoveClicked">
-                Remove
-            </a>
+            <div class="cell-flex">
+                <a href="#" @click.prevent="onRemoveClicked">
+                    Remove
+                </a>
+            </div>
         </div>
     </div>
 </template>

@@ -4,6 +4,11 @@
     border: 1px solid #ccc;
     padding: 8px;
     text-indent: 1px;
-    text-overflow: '';
     width: 100%;
+
+    &[type=number]::-webkit-inner-spin-button,
+    &[type=number]::-webkit-outer-spin-button {
+        appearance: none;
+        margin: 0;
+    }
 }
