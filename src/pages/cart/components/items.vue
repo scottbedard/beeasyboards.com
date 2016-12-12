@@ -1,152 +1,144 @@
 <style lang="scss" scoped>@import 'core';
-    .table {
-        display: table;
-        width: 100%;
+    //
+    // Rows
+    //
+    .header {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 20px;
     }
 
     .row {
-        display: table-row;
-    }
-
-    .header-cell {
-        display: table-cell;
-        font-weight: bold;
-    }
-
-    .cell {
-        display: table-cell;
-        vertical-align: middle;
-    }
-
-    .item-flex {
-        align-items: center;
         display: flex;
+
+        &:not(:last-child) {
+            margin-bottom: 20px;
+        }
     }
 
+    //
+    // Thumbnail
+    //
     .thumbnail {
+        padding-right: 20px;
+        @include bp-prop(width, 95px, 110px, 125px);
+        @include transition(width);
+
         img {
-            width: auto;
-            @include bp-prop(max-height, 100px);
+            height: auto;
+            width: 100%;
         }
     }
 
+
+    //
+    // Product
+    //
     .product {
-        .inventory {
-            font-size: 12px;
+        flex-grow: 1;
+
+        .options,
+        .remove {
+            color: #666;
+            font-size: .8em;
         }
+
+        .remove:hover { color: #000 }
     }
 
-    .quantity,
-    .remove {
+    //
+    // Quantity
+    //
+    .quantity {
         text-align: center;
-        width: 20%;
+        @include bp-prop(width, 20%, false, 10%);
+
+        .mobile-quantity { @include bp-prop(display, inline, none) }
+        .large-phone-quantity { @include bp-prop(display, none, inline) }
     }
 
-    .quantity-mobile {
-        @include bp-prop(display, inline, false, none);
-    }
-
-    .quantity-tablet {
-        @include bp-prop(display, none, false, inline);
-    }
-
-    .remove {
-        @include bp-prop(display, none, false, table-cell);
-    }
-
-    .mobile-remove {
-        font-size: 12px;
-        @include bp-prop(display, inline, false, none);
-    }
-
-    input {
+    //
+    // Price
+    //
+    .price {
+        margin-left: 20px;
         text-align: center;
+        width: 10%;
+        @include bp-prop(display, none, false, block);
+
+        .unit-price {
+            font-size: 12px;
+            font-weight: 300;
+            color: #666;
+        }
     }
 </style>
 
 <template>
-    <div class="v-cart">
-        <div class="table">
-            <div class="row">
-                <div class="header-cell item">Item</div>
-                <div class="header-cell quantity">
-                    <span class="quantity-mobile">#</span>
-                    <span class="quantity-tablet">Quantity</span>
-                </div>
-                <div class="header-cell remove">Remove</div>
+    <div class="v-items">
+        <div class="header row">
+            <div class="thumbnail"></div>
+            <div class="product">Product</div>
+            <div class="quantity">
+                <span class="mobile-quantity">#</span>
+                <span class="large-phone-quantity">Quantity</span>
             </div>
-            <div class="row" v-for="item in items">
-                <div class="cell item">
-                    <div class="item-flex">
-                        <div class="thumbnail">
-                            <img
-                                v-if="item.inventory.product.thumbnails.length"
-                                :src="item.inventory.product.thumbnails[0].path"
-                                :alt="item.inventory.product.thumbnails[0].title || item.inventory.product.name">
-                        </div>
-                        <div class="product">
-                            <div class="name">
-                                {{ item.inventory.product.name }}
-                            </div>
-                            <div
-                                class="inventory"
-                                v-if="item.inventory.option_values.length">
-                                {{ inventoryString(item) }}
-                            </div>
-                            <a href="#" @click.prevent="removeItem(item)" class="mobile-remove">
-                                <i class="fa fa-times"></i> Remove
-                            </a>
-                        </div>
+            <div class="price">Price</div>
+        </div>
+        <div v-for="{ item, inventory, product, thumbnails } in items" class="row">
+            <router-link class="thumbnail" :to="{ name: 'shop-product', params: { slug: product.slug }}">
+                <img
+                    v-if="thumbnails.length"
+                    :src="thumbnails[0].path"
+                    :alt="thumbnails[0].title || product.name">
+            </router-link>
+            <div class="product">
+                <router-link class="thumbnail" :to="{ name: 'shop-product', params: { slug: product.slug }}">
+                    {{ product.name }}
+                </router-link>
+                <div class="options">
+                    <div class="option" v-for="value in inventory.option_values">
+                        {{ value.option.name }}: {{ value.name }}
                     </div>
                 </div>
-                <div class="cell quantity">
-                    <input
-                        class="form-control"
-                        min="0"
-                        type="number"
-                        :max="item.inventory.quantity"
-                        :value="item.quantity">
-                </div>
-                <a class="cell remove" href="#" @click.prevent="removeItem(item)">
+                <a href="#" @click.prevent="removeItem(item)" class="remove">
                     Remove
                 </a>
-            </diV>
+            </div>
+            <div class="quantity">
+                <v-select :clearable="false">
+                    <option v-for="n in inventory.quantity" :value="n">{{ n }}</option>
+                </v-select>
+            </div>
+            <div class="price">
+                <div>{{ itemTotal(item) }}</div>
+                <div class="unit-price" v-if="item.quantity > 1">
+                    {{ product.price }} / each
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import ShopRepository from 'src/repositories/shop';
     import { mapGetters } from 'vuex';
 
     export default {
-        components: {
-            'v-item': require('./item'),
-        },
         computed: {
             ...mapGetters({
                 total: 'SHOP_CART_TOTAL',
             }),
             items() {
-                return this.$store.state.shop.cart.items;
+                return this.$store.state.shop.cart.items.map(item => ({
+                    item,
+                    inventory: item.inventory,
+                    product: item.inventory.product,
+                    thumbnails: item.inventory.product.thumbnails,
+                }));
             },
         },
         methods: {
-            inventoryString(item) {
-                return item.inventory.option_values
-                    .map(value => value.name)
-                    .join(', ');
-            },
-            removeItem(item) {
-                ShopRepository.removeItem(item.inventory_id)
-                    .then(response => this.onRemoveSuccess(response, item))
-                    .catch(error => this.onRemoveFailed(error));
-            },
-            onRemoveFailed(error) {
-                this.$alert('Whoa, something went wrong, please try again.', { type: 'error' });
-            },
-            onRemoveSuccess(response, item) {
-                this.$store.commit('SHOP_CART_ITEM_REMOVED', item);
+            itemTotal(item) {
+                return item.quantity * item.inventory.product.price;
             },
         },
     };

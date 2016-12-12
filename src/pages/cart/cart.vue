@@ -17,14 +17,17 @@
 </template>
 
 <script>
-    import ItemsComponent from './components/items';
+
 
     export default {
         data() {
             return {};
         },
         components: {
-            'v-items': ItemsComponent,
+            'v-items': require('./components/items'),
+        },
+        computed: {
+
         },
     };
 </script>
