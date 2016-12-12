@@ -3,7 +3,11 @@
 </style>
 
 <template>
-    <v-page>
+    <!-- Empty cart -->
+    <v-empty v-if="isEmpty"></v-empty>
+
+    <!-- Populated cart -->
+    <v-page v-else>
         <h1>Cart</h1>
         <div class="grid padded">
             <div class="cell mobile-12 tablet-8">
@@ -17,17 +21,20 @@
 </template>
 
 <script>
-
+    import { mapGetters } from 'vuex';
 
     export default {
         data() {
             return {};
         },
         components: {
+            'v-empty': require('./empty'),
             'v-items': require('./components/items'),
         },
         computed: {
-
+            ...mapGetters({
+                isEmpty: 'SHOP_CART_IS_EMPTY',
+            }),
         },
     };
 </script>

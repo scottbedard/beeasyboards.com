@@ -27,6 +27,9 @@ module.exports = {
                 return (aPrice * aQuantity) + (bPrice * bQuantity);
             }, 0);
         },
+        [types.SHOP_CART_IS_EMPTY]: (state, getters) => {
+            return getters.SHOP_CART_ITEM_COUNT === 0;
+        },
         [types.SHOP_CART_ITEM_COUNT]: state => {
             return state.cart.items
                 .map(item => item.quantity)
