@@ -37,9 +37,15 @@
         flex-grow: 1;
 
         .options,
+        .mobile-price,
         .remove {
             color: #666;
             font-size: .8em;
+        }
+
+        .mobile-price {
+            @include bp-prop(display, block, false, none);
+            .unit-price { font-size: .75em }
         }
 
         .remove:hover { color: #000 }
@@ -68,7 +74,6 @@
         .unit-price {
             font-size: 12px;
             font-weight: 300;
-            color: #666;
         }
     }
 </style>
@@ -95,6 +100,12 @@
                 <router-link class="thumbnail" :to="{ name: 'shop-product', params: { slug: product.slug }}">
                     {{ product.name }}
                 </router-link>
+                <div class="mobile-price">
+                    <span>Price: {{ itemTotal(item) | money }}</span>
+                    <span class="unit-price" v-if="item.quantity > 1">
+                        ({{ product.price | money }}/ea)
+                    </span>
+                </div>
                 <div class="options">
                     <div class="option" v-for="value in inventory.option_values">
                         {{ value.option.name }}: {{ value.name }}
@@ -110,9 +121,9 @@
                 </v-select>
             </div>
             <div class="price">
-                <div>{{ itemTotal(item) }}</div>
+                <div>{{ itemTotal(item) | money }}</div>
                 <div class="unit-price" v-if="item.quantity > 1">
-                    {{ product.price }} / each
+                    {{ product.price | money }} each
                 </div>
             </div>
         </div>
@@ -120,6 +131,7 @@
 </template>
 
 <script>
+    import ShopRepository from 'src/repositories/shop';
     import { mapGetters } from 'vuex';
 
     export default {
@@ -138,7 +150,20 @@
         },
         methods: {
             itemTotal(item) {
+                console.log ('qty', item.quantity, item);
                 return item.quantity * item.inventory.product.price;
+            },
+            removeItem(item) {
+                ShopRepository.removeItem(item.inventory_id)
+                    .then(response => this.onItemRemoved(item))
+                    .catch(this.onItemRemoveFailed);
+            },
+            onItemRemoved(item) {
+                this.$store.commit('SHOP_CART_ITEM_REMOVED', item);
+            },
+            onItemRemoveFailed() {
+                let error = 'Damn, something went wrong and that item wasn\'t removed.';
+                this.$alert(error, { type: 'error' });
             },
         },
     };

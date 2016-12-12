@@ -11,6 +11,11 @@ require('./prototype');
 require('./directives/linkable');
 
 //
+// Filters
+//
+require('./filters/money');
+
+//
 // Plugins
 //
 require('./plugins/alert');
