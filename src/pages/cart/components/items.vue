@@ -116,7 +116,7 @@
                 </a>
             </div>
             <div class="quantity">
-                <v-select :clearable="false">
+                <v-select :clearable="false" :selected="item.quantity">
                     <option v-for="n in inventory.quantity" :value="n">{{ n }}</option>
                 </v-select>
             </div>
@@ -150,7 +150,6 @@
         },
         methods: {
             itemTotal(item) {
-                console.log ('qty', item.quantity, item);
                 return item.quantity * item.inventory.product.price;
             },
             removeItem(item) {

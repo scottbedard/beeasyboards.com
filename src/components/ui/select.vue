@@ -91,6 +91,9 @@
                 value: '',
             };
         },
+        mounted() {
+            this.selectInitialValue();
+        },
         computed: {
             isEmpty() {
                 return this.value === this.placeholder;
@@ -110,10 +113,23 @@
                     option.selected = option.text == this.placeholder;
                 }
             },
+            selectInitialValue() {
+                if (this.selected !== null) {
+                    let options = this.$refs.select.options;
+
+                    for (let option, i = 0; option = options[i]; i++) {
+                        if (option.value == this.selected) {
+                            this.$refs.select.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+            },
         },
         props: {
             clearable: { type: Boolean, default: true },
             placeholder: { type: String, default: '' },
+            selected: { default: null },
         },
     };
 </script>
