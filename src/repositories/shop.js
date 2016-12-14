@@ -23,7 +23,11 @@ export default {
         return Vue.http.get(endpoint).then(normalizeResponse);
     },
     removeItem(inventoryId) {
-        const endpoint = `/api/bedard/shop/cart/remove/${ inventoryId }`;
-        return Vue.http.delete(endpoint);
+        const endpoint = `/api/bedard/shop/cart/item/${ inventoryId }`;
+        return Vue.http.delete(endpoint).then(normalizeResponse);
+    },
+    updateQuantity(itemId, quantity) {
+        const endpoint = `/api/bedard/shop/cart/item/${ itemId }`;
+        return Vue.http.patch(endpoint, { quantity }).then(normalizeResponse);
     },
 };

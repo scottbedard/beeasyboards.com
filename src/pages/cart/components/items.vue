@@ -116,7 +116,10 @@
                 </a>
             </div>
             <div class="quantity">
-                <v-select :clearable="false" :selected="item.quantity">
+                <v-select
+                    :clearable="false"
+                    :selected="item.quantity"
+                    @change="value => updateQuantity(item, Number(value))">
                     <option v-for="n in inventory.quantity" :value="n">{{ n }}</option>
                 </v-select>
             </div>
@@ -152,17 +155,31 @@
             itemTotal(item) {
                 return item.quantity * item.inventory.product.price;
             },
-            removeItem(item) {
-                ShopRepository.removeItem(item.inventory_id)
-                    .then(response => this.onItemRemoved(item))
-                    .catch(this.onItemRemoveFailed);
-            },
             onItemRemoved(item) {
                 this.$store.commit('SHOP_CART_ITEM_REMOVED', item);
             },
             onItemRemoveFailed() {
                 let error = 'Damn, something went wrong and that item wasn\'t removed.';
+
                 this.$alert(error, { type: 'error' });
+            },
+            onItemUpdated(response) {
+                this.$store.commit('SHOP_CART_SET_ITEM', response.data);
+            },
+            onItemUpdateFailed() {
+                let error = 'An error occured and we weren\'t able to update that item.';
+
+                this.$alert(error, { type: 'error' });
+            },
+            removeItem(item) {
+                ShopRepository.removeItem(item.inventory_id)
+                    .then(response => this.onItemRemoved(item))
+                    .catch(this.onItemRemoveFailed);
+            },
+            updateQuantity(item, quantity) {
+                ShopRepository.updateQuantity(item.id, quantity)
+                    .then(this.onItemUpdated)
+                    .catch(this.onItemUpdateFailed);
             },
         },
     };
