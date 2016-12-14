@@ -15,13 +15,15 @@
             }
         }
 
-        &:hover {
-            text-decoration: none;
-        }
+        &:not(.outlined) {
+            &:hover {
+                text-decoration: none;
+            }
 
-        @each $name, $color in $colors {
-            &.background-#{ $name }:hover {
-                background-color: darken($color, 5%);
+            @each $name, $color in $colors {
+                &.background-#{ $name }:hover {
+                    background-color: darken($color, 5%);
+                }
             }
         }
 
@@ -37,10 +39,19 @@
         color: $color;
 
         &:hover {
-            background-color: transparent;
-            border-color: $off-black;
-            color: $off-black;
+            background-color: lighten($off-black, 5%);
+            border-color: lighten($off-black, 5%);
+            color: #fff;
         }
+    }
+
+    //
+    // Icons
+    //
+    i.fa {
+        padding: 0 5px;
+        &:first-child { padding-left: 0 }
+        &:last-child { padding-right: 0 }
     }
 </style>
 

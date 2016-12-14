@@ -6,26 +6,16 @@ module.exports = {
         categories: [],
     },
     getters: {
-        [types.SHOP_CART_TOTAL]: ( state, getters ) => {
-            let total = state.cart.items.reduce((a, b) => {
-                let aPrice = typeof a.inventory !== 'undefined'
-                    ? a.inventory.product.price
-                    : 0;
+        [types.SHOP_CART_SUBTOTAL]: (state, getters) => {
+            return getters[types.SHOP_CART_TOTAL]; // @todo
+        },
+        [types.SHOP_CART_TOTAL]: (state, getters) => {
+            let total = 0;
+            state.cart.items.forEach(item => {
+                total += item.quantity * item.inventory.product.price;
+            });
 
-                let aQuantity = typeof a.inventory !== 'undefined'
-                    ? a.inventory.quantity
-                    : 0;
-
-                let bPrice = typeof b.inventory !== 'undefined'
-                    ? b.inventory.product.price
-                    : 0;
-
-                let bQuantity = typeof b.inventory !== 'undefined'
-                    ? b.inventory.quantity
-                    : 0;
-
-                return (aPrice * aQuantity) + (bPrice * bQuantity);
-            }, 0);
+            return Number(total.toFixed(2));
         },
         [types.SHOP_CART_IS_EMPTY]: (state, getters) => {
             return getters.SHOP_CART_ITEM_COUNT === 0;
