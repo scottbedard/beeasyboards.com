@@ -8,13 +8,14 @@
 
     <!-- Populated cart -->
     <v-page v-else>
-        <h1>Cart</h1>
         <div class="grid padded">
-            <div class="cell mobile-12 tablet-8">
+            <div class="cell mobile-12 tablet-8 desktop-9">
+                <h2>Your shopping cart</h2>
                 <v-items></v-items>
             </div>
-            <div class="cell mobile-12 tablet-4">
-                Right
+            <div class="cell mobile-12 tablet-4 desktop-3">
+                <h2>Summary</h2>
+                <v-summary></v-summary>
             </div>
         </div>
     <v-page>
@@ -24,17 +25,14 @@
     import { mapGetters } from 'vuex';
 
     export default {
-        data() {
-            return {};
-        },
         components: {
             'v-empty': require('./empty'),
             'v-items': require('./components/items'),
+            // 'v-login': require('./components/login'),
+            'v-summary': require('./components/summary'),
         },
-        computed: {
-            ...mapGetters({
-                isEmpty: 'SHOP_CART_IS_EMPTY',
-            }),
-        },
+        computed: mapGetters({
+            isEmpty: 'SHOP_CART_IS_EMPTY',
+        }),
     };
 </script>
