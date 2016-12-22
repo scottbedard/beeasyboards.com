@@ -16,7 +16,7 @@
 </style>
 
 <template>
-    <div>
+    <div class="v-spinner">
         <svg
             enable-background="new 134 73 41 41"
             version="1.1"

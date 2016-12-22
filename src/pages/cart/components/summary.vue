@@ -31,12 +31,19 @@
             <span>Total</span>
             <span>{{ total | money }}</span>
         </div>
+        <div class="row">
+            <v-login></v-login>
+        </div>
         <div class="row checkout">
             <v-button class="outlined" @click="onCheckoutClicked">
                 <i class="fa fa-shopping-cart"></i>
                 <span>Checkout</span>
             </v-button>
         </div>
+
+        <v-modal ref="checkout">
+            <v-checkout></v-checkout>
+        </v-modal>
     </div>
 </template>
 
@@ -44,13 +51,17 @@
     import { mapGetters } from 'vuex';
 
     export default {
+        components: {
+            'v-checkout': require('./checkout/checkout'),
+            'v-login': require('./login'),
+        },
         computed: mapGetters({
             subtotal: 'SHOP_CART_SUBTOTAL',
             total: 'SHOP_CART_TOTAL',
         }),
         methods: {
             onCheckoutClicked() {
-                console.log ('fine');
+                this.$refs.checkout.show();
             },
         },
     };

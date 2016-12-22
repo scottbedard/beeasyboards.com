@@ -25,14 +25,31 @@
     import { mapGetters } from 'vuex';
 
     export default {
+        created() {
+            this.cleanUrlHash();
+        },
         components: {
             'v-empty': require('./empty'),
             'v-items': require('./components/items'),
-            // 'v-login': require('./components/login'),
             'v-summary': require('./components/summary'),
         },
         computed: mapGetters({
             isEmpty: 'SHOP_CART_IS_EMPTY',
         }),
+        methods: {
+            cleanUrlHash() {
+                // clean up the #_=_ appended to the url by facebook
+                if (window.location.hash && window.location.hash == '#_=_') {
+                    if (window.history && history.pushState) {
+                        window.history.pushState('', document.title, window.location.pathname);
+                    } else {
+                        let { scrollTop, scrollLeft } = document.body;
+                        window.location.hash = '';
+                        document.body.scrollTop = scrollTop;
+                        document.body.scrollLeft = scrollLeft;
+                    }
+                }
+            },
+        },
     };
 </script>
