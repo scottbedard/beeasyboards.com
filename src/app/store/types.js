@@ -24,6 +24,14 @@ export const SHOP_INITIALIZE_CART = 'SHOP_INITIALIZE_CART';
 export const SHOP_SET_CATEGORIES = 'SHOP_SET_CATEGORIES';
 
 //
+// User
+//
+export const USER_FIRST_NAME = 'USER_FIRST_NAME';
+export const USER_INITIALIZE = 'USER_INITIALIZE';
+export const USER_IS_LOGGED_IN = 'USER_IS_LOGGED_IN';
+export const USER_LOGOUT = 'USER_LOGOUT';
+
+//
 // Window
 //
 export const WINDOW_SET_MINIMIZED = 'WINDOW_SET_MINIMIZED';

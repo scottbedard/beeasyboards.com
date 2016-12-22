@@ -12,6 +12,7 @@ function onStart() {
 
     $this->page->data = json_encode([
         'cart' => $cart,
+        'user' => Auth::getUser(),
     ]);
 }
 ==

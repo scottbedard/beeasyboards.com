@@ -33,19 +33,19 @@
 <template>
     <div>
         <h3>Want us to remember you for next time?</h3>
-        <a href="/api/bedard/socialite/twitter" @click.prevent="onTwitterClicked" class="twitter">
-            <transition name="fade" mode="out-in">
-                <v-spinner :size="spinnerSize" v-if="twitterIsLoading"></v-spinner>
-                <i v-else class="fa fa-twitter"></i>
-            </transition>
-            <span>Sign in with Twitter</span>
-        </a>
         <a href="/api/bedard/socialite/facebook" @click.prevent="onFacebookClicked" class="facebook">
             <transition name="fade" mode="out-in">
                 <v-spinner :size="spinnerSize" v-if="facebookIsLoading"></v-spinner>
                 <i v-else class="fa fa-facebook"></i>
             </transition>
             <span>Sign in with Facebook</span>
+        </a>
+        <a href="/api/bedard/socialite/twitter" @click.prevent="onTwitterClicked" class="twitter">
+            <transition name="fade" mode="out-in">
+                <v-spinner :size="spinnerSize" v-if="twitterIsLoading"></v-spinner>
+                <i v-else class="fa fa-twitter"></i>
+            </transition>
+            <span>Sign in with Twitter</span>
         </a>
         <a href="/api/bedard/socialite/google" @click.prevent="onGoogleClicked" class="google">
             <transition name="fade" mode="out-in">
@@ -63,7 +63,7 @@
             return {
                 facebookIsLoading: false,
                 googleIsLoading: false,
-                spinnerSize: "16px",
+                spinnerSize: '16px',
                 twitterIsLoading: false,
             };
         },
@@ -81,7 +81,7 @@
                 this.redirect('google');
             },
             redirect(provider) {
-                window.location.replace(`/api/bedard/socialite/${ provider }`)
+                window.location.replace(`/api/bedard/socialite/${ provider }`);
             },
         },
     };

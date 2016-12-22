@@ -32,7 +32,10 @@
             <span>{{ total | money }}</span>
         </div>
         <div class="row">
-            <v-login></v-login>
+            <transition name="fade" mode="out-in">
+                <v-user v-if="isLoggedIn"></v-user>
+                <v-login v-else></v-login>
+            </transition>
         </div>
         <div class="row checkout">
             <v-button class="outlined" @click="onCheckoutClicked">
@@ -48,17 +51,24 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
+    import { mapGetters, mapState } from 'vuex';
 
     export default {
         components: {
             'v-checkout': require('./checkout/checkout'),
             'v-login': require('./login'),
+            'v-user': require('./user'),
         },
-        computed: mapGetters({
-            subtotal: 'SHOP_CART_SUBTOTAL',
-            total: 'SHOP_CART_TOTAL',
-        }),
+        computed: {
+            ...mapGetters({
+                subtotal: 'SHOP_CART_SUBTOTAL',
+                total: 'SHOP_CART_TOTAL',
+                isLoggedIn: 'USER_IS_LOGGED_IN',
+            }),
+            ...mapState({
+                user: state => state.user.user,
+            }),
+        },
         methods: {
             onCheckoutClicked() {
                 this.$refs.checkout.show();

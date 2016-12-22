@@ -40,7 +40,10 @@
                 document.title = title;
             },
             storeInitialData() {
-                this.$store.commit('SHOP_INITIALIZE_CART', BeEasyData.cart);
+                const { cart, user } = BeEasyData;
+
+                if (cart) this.$store.commit('SHOP_INITIALIZE_CART', cart);
+                if (user) this.$store.commit('USER_INITIALIZE', user);
             },
             watchWindowVisibility() {
                 document.addEventListener('visibilitychange', () => {
