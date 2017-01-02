@@ -7,6 +7,7 @@ module.exports = [
         path: '/cart',
         name: 'cart',
         component: require('src/pages/cart/cart'),
+        component: r => require.ensure([], () => r(require('src/pages/cart/cart')), 'cart'),
     },
 
     //
@@ -15,7 +16,7 @@ module.exports = [
     {
         path: '/',
         name: 'home',
-        component: require('src/pages/home/home'),
+        component: r => require.ensure([], () => r(require('src/pages/home/home')), 'home'),
     },
 
     //
@@ -24,13 +25,13 @@ module.exports = [
     {
         path: '/shop/product/:slug',
         name: 'shop-product',
-        component: require('src/pages/shop/product/product'),
+        component: r => require.ensure([], () => r(require('src/pages/shop/product/product')), 'shop'),
     },
 
     {
         path: '/shop/:category?',
         name: 'shop-category',
-        component: require('src/pages/shop/category/category'),
+        component: r => require.ensure([], () => r(require('src/pages/shop/category/category')), 'shop'),
     },
 
     //
@@ -39,12 +40,12 @@ module.exports = [
     {
         path: '/error',
         name: '500',
-        component: require('src/pages/500/500'),
+        component: r => require.ensure([], () => r(require('src/pages/500/500')), 'error'),
     },
 
     {
         path: '*',
         name: '404',
-        component: require('src/pages/404/404'),
+        component: r => require.ensure([], () => r(require('src/pages/404/404')), 'error'),
     },
 ];
