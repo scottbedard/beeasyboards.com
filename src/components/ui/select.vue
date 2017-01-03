@@ -2,10 +2,6 @@
     $icon-stroke-color: #ccc;
     $icon-stroke-width: 2px;
 
-    label + div > select {
-        margin-top: 2px;
-    }
-
     div {
         position: relative;
     }
@@ -32,7 +28,7 @@
     }
 
     a {
-        $cross-size: 14px;
+        $cross-size: 15px;
         position: absolute;
         display: block;
         right: 11px;
@@ -59,6 +55,7 @@
             position: absolute;
             left: 50%;
             top: 0%;
+            @include transition(border-color);
         }
 
         &:before { transform: rotate(45deg) }
@@ -68,8 +65,12 @@
 
 <template>
     <div>
-        <select @change="onChanged" class="form-control" ref="select">
-            <option v-if="placeholder.length" selected disabled>{{ placeholder }}</option>
+        <select
+            class="form-control"
+            ref="select"
+            @input="onInput"
+            :required="required">
+            <option v-if="hasPlaceholder" disabled>{{ placeholder }}</option>
             <slot></slot>
         </select>
         <span v-if="isEmpty || ! clearable"></span>
@@ -83,53 +84,41 @@
 
 <script>
     export default {
-        created() {
-            this.value = this.placeholder;
-        },
-        data() {
-            return {
-                value: '',
-            };
-        },
         mounted() {
-            this.selectInitialValue();
+            this.onValueChanged();
         },
         computed: {
             isEmpty() {
-                return this.value === this.placeholder;
+                return this.value === null || this.value.length === 0;
+            },
+            hasPlaceholder() {
+                return this.placeholder.length > 0;
             },
         },
         methods: {
-            onChanged(e) {
-                this.value = this.$refs.select.value;
-                this.$emit('change', this.value);
-            },
             onClearClicked() {
-                this.$emit('clear', this.value);
-
-                this.value = this.placeholder;
-                for (let i = 0, end = this.$refs.select.options.length; i < end; i++) {
-                    let option = this.$refs.select.options[i];
-                    option.selected = option.text == this.placeholder;
-                }
+                this.$emit('input', null);
             },
-            selectInitialValue() {
-                if (this.selected !== null) {
-                    let options = this.$refs.select.options;
+            onInput(e) {
+                this.$emit('input', e.target.value);
+            },
+            onValueChanged() {
+                this.$refs.select.value = this.value;
 
-                    for (let option, i = 0; option = options[i]; i++) {
-                        if (option.value == this.selected) {
-                            this.$refs.select.selectedIndex = i;
-                            break;
-                        }
-                    }
+                if (! this.value && this.hasPlaceholder) {
+                    this.$refs.select.options[0].selected = 'selected';
                 }
             },
         },
         props: {
             clearable: { type: Boolean, default: true },
+            required: { type: Boolean, default: false },
             placeholder: { type: String, default: '' },
             selected: { default: null },
+            value: { default: '' },
+        },
+        watch: {
+            value: 'onValueChanged',
         },
     };
 </script>
