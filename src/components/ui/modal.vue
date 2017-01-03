@@ -24,15 +24,29 @@
     }
 
     .content {
+        $vertical-margin: 40px;
         background: #fff;
         border-radius: 3px;
         margin: 12px;
+        max-height: 280px;
         max-width: 768px;
+        overflow-x: hidden;
+        overflow-y: scroll;
         padding: 20px;
         position: relative;
         transform: translateY(-20px);
         width: 100%;
-        @include transition(transform, 100ms);
+
+        @include bp('min-height: 375px') { max-height: 375px - $vertical-margin } // iPod 6 (landscape)
+        @include bp('min-height: 414px') { max-height: 414px - $vertical-margin } // iPod 6+ (landscape)
+        @include bp('min-height: 568px') { max-height: 568px - $vertical-margin } // iPod 5 (portrait)
+        @include bp('min-height: 768px') {
+            max-height: none;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        @include transition('max-height, transform', 100ms);
 
         > a.hide {
             color: #999;
