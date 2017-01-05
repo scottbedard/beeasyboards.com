@@ -118,8 +118,8 @@
             <div class="quantity">
                 <v-select
                     :clearable="false"
-                    :selected="item.quantity"
-                    @change="value => updateQuantity(item, Number(value))">
+                    :value="item.quantity"
+                    @input="value => updateQuantity(item, Number(value))">
                     <option v-for="n in inventory.quantity" :value="n">{{ n }}</option>
                 </v-select>
             </div>

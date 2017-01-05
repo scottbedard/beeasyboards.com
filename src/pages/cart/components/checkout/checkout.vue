@@ -14,7 +14,9 @@
 
 <template>
     <div class="v-checkout">
-        <v-address></v-address>
+        <h2>Shipping info</h2>
+        <v-customer ref="customer" @change="onCustomerChanged"></v-customer>
+        <v-address @change="onAddressChanged"></v-address>
     </div>
 </template>
 
@@ -22,6 +24,24 @@
     export default {
         components: {
             'v-address': require('./address'),
+            'v-customer': require('./customer'),
+        },
+        data() {
+            return {
+                address: {},
+                customer: {},
+            };
+        },
+        methods: {
+            focus() {
+                this.$refs.customer.focus();
+            },
+            onAddressChanged(data) {
+                this.address = data;
+            },
+            onCustomerChanged(data) {
+                this.customer = data;
+            },
         },
     };
 </script>

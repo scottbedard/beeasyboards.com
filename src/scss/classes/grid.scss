@@ -18,6 +18,13 @@
         }
     }
 
+    > .row {
+        display: flex;
+        flex-basis: auto;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
     > .cell,
     > .row > .cell {
         flex-basis: auto;

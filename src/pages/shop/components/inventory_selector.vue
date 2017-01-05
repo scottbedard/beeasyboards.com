@@ -1,142 +1,67 @@
 <style lang="scss" scoped>@import 'core';
-    .option {
-        margin-bottom: 12px;
 
-        label {
-            display: block;
-        }
-    }
 </style>
 
 <template>
-    <div v-if="isOutOfStock">
-        <strong>Out of stock</strong>
-    </div>
-    <form @submit.prevent="onAddToCartClicked" v-else>
-        <div class="option">
-            <label for="quantity">Quantity</label>
-            <v-input
-                min="0"
-                type="number"
-                v-model="quantity"
-                :prevent-enter="formIsDisabled">
-            </v-input>
-        </div>
-        <div v-for="option in product.options" class="option">
-            <label :for="getOptionId(option)">{{ option.name }}</label>
+    <div>
+        <div v-for="option in product.options">
             <v-select
-                :id="getOptionId(option)"
-                :placeholder="option.placeholder"
-                @change="onValueSelected"
-                @clear="onValueCleared">
+                v-model="selectedValues.find(selected => selected.option === option.id).value"
+                :placeholder="option.placeholder">
                 <option
                     v-for="value in option.values"
-                    :disabled="! isAvailable(value)"
-                    :value="value.id">
-                    {{ value.name }}
-                    <template v-if="! isAvailable(value)">(out of stock)</template>
-                </option>
+                    :disabled="! isAvailable(option, value)"
+                    :value="value.id"><!--
+                 -->{{ value.name }}<!--
+             --></option>
             </v-select>
         </div>
-        <v-button
-            :disabled="formIsDisabled"
-            type="submit">
-            <v-button-spinner v-if="isLoading"></v-button-spinner>
-            <span>{{ addButtonText }}</span>
-        </v-button>
-    </form>
+        <pre>{{ $data }}</pre>
+    </div>
 </template>
 
 <script>
     export default {
+        created() {
+            this.setInitialValues();
+        },
         data() {
             return {
                 selectedValues: [],
-                quantity: 1,
             };
         },
         computed: {
-            addButtonText() {
-                return this.isLoading
-                    ? 'Adding...'
-                    : 'Add to cart';
+            availableInventories() {
+                return this.product.inventories.filter(inventory => inventory.quantity > 0);
             },
-            availableInventoryValueIds() {
-                return this.product.inventories
-                    .filter(inventory => inventory.quantity > 0)
-                    .map(inventory => inventory.option_values.map(value => value.id));
-            },
-            formIsDisabled() {
-                return this.isLoading
-                    || ! this.selectedInventory
-                    || this.selectedInventory.quantity <= 0;
-            },
-            isOutOfStock() {
-                return this.product.inventories
-                    .map(inventory => inventory.quantity)
-                    .reduce((a, b) => a + b, 0) === 0;
-            },
-            selectedInventory() {
-                let selectedValueIds = this.selectedValues.map(value => value.id);
-
-                for (let inventory of this.product.inventories) {
-                    let inventoryValueIds = inventory.option_values.map(value => value.id);
-                    if (inventoryValueIds.intersect(selectedValueIds).length === inventoryValueIds.length) {
-                        return inventory;
-                    }
-                }
-
-                return null;
-            },
-            values() {
-                let values = [];
-                for (let option of this.product.options) {
-                    for (let value of option.values) {
-                        values.push(value);
-                    }
-                }
-
-                return values;
+            availableValueCombinations() {
+                return this.availableInventories.map(inventory => {
+                    return inventory.option_values.map(value => value.id);
+                });
             },
         },
         methods: {
-            isAvailable(value) {
-                // determine what the selections would be if this value was included
-                let possibleSelection = this.selectedValues
-                    .filter(model => model.option_id != value.option_id)
-                    .map(model => model.id);
+            isAvailable(option, value) {
+                // determine what the selection would be if this value were included
+                let values = this.selectedValues
+                    .filter(value => value.option != option.id)
+                    .filter(value => value.value)
+                    .map(value => Number(value.value));
 
-                if (! possibleSelection.find(model => model.id == value.id)) {
-                    possibleSelection.push(value.id);
+                values.push(value.id);
+
+                // check if the array of values is in stock
+                return Boolean(this.availableValueCombinations.find(combination => {
+                    return values.intersect(combination).equals(values);
+                }));
+            },
+            setInitialValues() {
+                for (let option of this.product.options) {
+                    this.selectedValues.push({ option: option.id, value: null });
                 }
-
-                // determine if our possible selection is part of the available inventories
-                for (let valueIds of this.availableInventoryValueIds) {
-                    if (possibleSelection.intersect(valueIds).length >= possibleSelection.length) {
-                        return true;
-                    }
-                }
-
-                return false;
-            },
-            getOptionId(option) {
-                return `option-${ option.id }`;
-            },
-            onAddToCartClicked() {
-                this.$emit('add', this.selectedInventory, this.quantity);
-            },
-            onValueSelected(id) {
-                let value = this.values.find(model => model.id == id);
-                this.selectedValues = this.selectedValues.filter(model => model.option_id != value.option_id);
-                this.selectedValues.push(value);
-            },
-            onValueCleared(id) {
-                let value = this.values.find(model => model.id == id);
-                this.selectedValues = this.selectedValues.filter(model => model.id != value.id);
             },
         },
         props: [
-            'isLoading',
             'product',
         ],
     };

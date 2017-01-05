@@ -84,6 +84,11 @@
 
 <script>
     export default {
+        data() {
+            return {
+                selected: null,
+            };
+        },
         mounted() {
             this.onValueChanged();
         },
@@ -114,8 +119,7 @@
             clearable: { type: Boolean, default: true },
             required: { type: Boolean, default: false },
             placeholder: { type: String, default: '' },
-            selected: { default: null },
-            value: { default: '' },
+            value: { default: null },
         },
         watch: {
             value: 'onValueChanged',

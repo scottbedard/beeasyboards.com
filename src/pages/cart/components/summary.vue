@@ -44,8 +44,8 @@
             </v-button>
         </div>
 
-        <v-modal ref="checkout">
-            <v-checkout></v-checkout>
+        <v-modal ref="modal">
+            <v-checkout ref="checkout"></v-checkout>
         </v-modal>
     </div>
 </template>
@@ -71,7 +71,8 @@
         },
         methods: {
             onCheckoutClicked() {
-                this.$refs.checkout.show();
+                this.$refs.modal.show();
+                setTimeout(() => this.$refs.checkout.focus(), 200);
             },
         },
     };
