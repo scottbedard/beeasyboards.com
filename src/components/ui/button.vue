@@ -15,7 +15,7 @@
             }
         }
 
-        &:not(.outlined) {
+        &:not(.outlined):not(:disabled) {
             &:hover {
                 text-decoration: none;
             }
