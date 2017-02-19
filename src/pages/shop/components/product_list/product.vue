@@ -49,14 +49,14 @@
         },
         computed: {
             firstThumbnail() {
-                if (this.product.thumbnails.length < 1) {
+                if (! this.product.thumbnails || this.product.thumbnails.length < 1) {
                     return false;
                 }
 
                 return this.product.thumbnails[0];
             },
             secondThumbnail() {
-                if (this.product.thumbnails.length < 2) {
+                if (! this.product.thumbnails || this.product.thumbnails.length < 2) {
                     return false;
                 }
 

@@ -32,17 +32,11 @@ module.exports = {
   module: {
     preLoaders: [
       {
-        test: /\.vue$/,
+        test: /\.(js|vue)$/,
         loader: 'eslint',
         include: projectRoot,
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
-      {
-        test: /\.js$/,
-        loader: 'eslint',
-        include: projectRoot,
-        exclude: /node_modules/
-      }
     ],
     loaders: [
       {
@@ -78,6 +72,7 @@ module.exports = {
     ]
   },
   eslint: {
+    fix: true,
     formatter: require('eslint-friendly-formatter')
   },
   vue: {

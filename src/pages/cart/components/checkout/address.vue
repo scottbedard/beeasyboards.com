@@ -1,9 +1,15 @@
 <style lang="scss" scoped>@import 'core';
-
+    .calculate-row {
+        .cell {
+            display: flex;
+            justify-content: flex-end;
+            padding-bottom: 0 !important;
+        }
+    }
 </style>
 
 <template>
-    <div class="grid padded">
+    <form class="grid padded" @submit.prevent="onSubmit">
         <div class="row">
             <div class="cell mobile-12 tablet-6">
                 <label class="form-label" for="address_1">Address</label>
@@ -66,7 +72,14 @@
                 </v-select>
             </div>
         </div>
-    </div>
+        <div class="row calculate-row">
+            <div class="cell">
+                <v-button type="submit">
+                    Continue
+                </v-button>
+            </div>
+        </div>
+    </form>
 </template>
 
 <script>
@@ -105,6 +118,9 @@
             },
             onCountryChanged() {
                 this.state = null;
+            },
+            onSubmit() {
+                console.log ('ok...');
             },
         },
         watch: {
